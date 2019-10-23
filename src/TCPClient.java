@@ -256,11 +256,15 @@ public class TCPClient {
             getOut().write(messageForServer);   // UTF is a string encoding; see Sec 4.3
             getOut().flush();
             serverResponse = getIn().readLine();
+            System.out.println("Server "+serverName+" responded: "+serverResponse);
+            return serverResponse;
+/*
             String serverRequest = serverResponse.split(" ", 2)[0];
             if (serverRequest.equals("Success!")) {
                 System.out.println("Server "+serverName+" responded: "+serverResponse);
                 return serverResponse;
             }
+*/
         }catch (UnknownHostException e){
             System.out.println("Unknown Host! Sock:"+e.getMessage());
             return ("Fail! "+"Unknown Host! Sock:"+e.getMessage());
@@ -271,7 +275,6 @@ public class TCPClient {
             System.out.println("IO Error:"+e.getMessage());
             return ("Fail! "+"IO Error:"+e.getMessage());
         }
-        return "Fail! Unknown error!";
     }
 
     public static void main (String args[]) {

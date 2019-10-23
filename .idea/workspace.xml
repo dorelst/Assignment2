@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPServer.java" afterDir="false" />
     </list>

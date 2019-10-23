@@ -49,13 +49,19 @@ class Connection extends Thread {
                 System.out.println("EOF: " + e.getMessage());
             } catch (IOException e) {
                 System.out.println("IO: " + e.getMessage());
+                System.out.println("Closing connection!");
+                break;
             }
         } while (!clientRequest.equals("Closed!"));
 
         try {
             clientSocket.close();
-        } catch (IOException e) {/*close failed*/}
-
+        } catch (IOException e) {
+            /*close failed*/
+            System.out.println("IO: " + e.getMessage());
+            System.out.println("Could not close connection!");
+        }
+        System.out.println("Connection closed!");
     }
 
     private String respondToClient(String data) {
@@ -103,8 +109,37 @@ class Connection extends Thread {
     }
 
     private String createFile(String[] incomingData) {
+        String message;
+        boolean fielExists=true;
+        File tempFile=null;
+        try  {
+            tempFile = new File(incomingData[2]+".txt");
+            fielExists = tempFile.exists();
+            System.out.println("File = "+tempFile+" exists? = "+fielExists+" and is a file? = "+tempFile.isFile());
 
-        return "Success! File "+incomingData[2]+".txt created!";
+            if (!fielExists) {
+                BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(incomingData[2]+".txt"), "UTF-8"));
+                String [] randomWords = new String[]{"aaaaaaa", "bbbbbbb", "ccccccc", "ddddddd", "eeeeeee", "fffffff", "ggggggg", "hhhhhhh", "iiiiiii", "jjjjjjj"};
+
+                for(int i = 0; i<10; i++) {
+                    String line = "";
+                    for (int j = 0; j<5; j++) {
+                        int wrd = (int)(Math.random()*9);
+                        line = j<4? line+randomWords[wrd]+" ":line+randomWords[wrd]+"\n";
+                    }
+                    writeFile.write(line);
+                }
+                message = "Success! File "+incomingData[2]+".txt created!";
+            } else {
+                message = "Fail! Another file with name "+incomingData[2]+".txt already present. Please change the name!";
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            message = "Fail! File"+incomingData[2]+".txt could not be created!";
+        }
+
+        return message;
     }
 
     private String registerClient(String[] incomingData) {
