@@ -4,17 +4,48 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TCPServer {
-    public static void main (String args[]) {
-        try{
-            int serverPort = 7896;
-            ServerSocket listenSocket = new ServerSocket(serverPort);
-            System.out.println("Server "+InetAddress.getLocalHost().getHostName()+" is up and running on port "+serverPort+"!");
-            while(true) {
-                Socket clientSocket = listenSocket.accept();
-                Connection c = new Connection(clientSocket);
-                System.out.println("New connection established");
+
+    private static boolean createWorkingDirectory() {
+        boolean fielExists = true;
+        File tempFile = null;
+        try {
+            tempFile = new File("Servers Folder");
+            fielExists = tempFile.exists();
+            System.out.println("File = " + tempFile + " exists? = " + fielExists + " and is a file? = " + tempFile.isFile());
+            if (!fielExists) {
+                if (tempFile.mkdir()){
+                    System.out.println("Server folder successfully created!");
+                    return true;
+                } else {
+                    System.out.println("Could not create the server folder!");
+                    return false;
+                }
+            } else {
+                System.out.println("Folder already exists! No new folder necessary!");
+                return true;
             }
-        } catch(IOException e) {System.out.println("Listen :"+e.getMessage());}
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could not crete Server Folder!");
+            return false;
+        }
+    }
+
+
+    public static void main (String args[]) {
+
+        if (createWorkingDirectory()){
+            try{
+                int serverPort = 7896;
+                ServerSocket listenSocket = new ServerSocket(serverPort);
+                System.out.println("Server "+InetAddress.getLocalHost().getHostName()+" is up and running on port "+serverPort+"!");
+                while(true) {
+                    Socket clientSocket = listenSocket.accept();
+                    Connection c = new Connection(clientSocket);
+                    System.out.println("New connection established");
+                }
+            } catch(IOException e) {System.out.println("Listen :"+e.getMessage());}
+        }
     }
 }
 class Connection extends Thread {
@@ -30,15 +61,16 @@ class Connection extends Thread {
             this.start();
         } catch(IOException e) {System.out.println("Connection:"+e.getMessage());}
     }
-    public void run(){
-        String serverResponse, clientRequest="";
+
+    public void run() {
+        String serverResponse, clientRequest = "";
         do {
             try {           // an echo server
                 String data = in.readLine();
                 //System.out.println("data = "+data);
                 if (data != null) {
                     serverResponse = respondToClient(data);
-                    System.out.println("server response = "+serverResponse);
+                    System.out.println("server response = " + serverResponse);
                     clientRequest = serverResponse.split(" ", 2)[0];
                     serverResponse = serverResponse + "\n";
                     out.write(serverResponse);
@@ -63,6 +95,7 @@ class Connection extends Thread {
         }
         System.out.println("Connection closed!");
     }
+
 
     private String respondToClient(String data) {
         String[] incomingData = data.split("_");
@@ -113,12 +146,14 @@ class Connection extends Thread {
         boolean fielExists=true;
         File tempFile=null;
         try  {
-            tempFile = new File(incomingData[2]+".txt");
+            //tempFile = new File("Server Folder"+File.separator+incomingData[2]+".txt");
+            tempFile = new File("Servers Folder",incomingData[2]+".txt");
             fielExists = tempFile.exists();
             System.out.println("File = "+tempFile+" exists? = "+fielExists+" and is a file? = "+tempFile.isFile());
 
             if (!fielExists) {
-                BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(incomingData[2]+".txt"), "UTF-8"));
+                BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Servers Folder"+File.separator+incomingData[2]+".txt"), "UTF-8"));
+                //BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
                 String [] randomWords = new String[]{"aaaaaaa", "bbbbbbb", "ccccccc", "ddddddd", "eeeeeee", "fffffff", "ggggggg", "hhhhhhh", "iiiiiii", "jjjjjjj"};
 
                 for(int i = 0; i<10; i++) {
@@ -128,6 +163,7 @@ class Connection extends Thread {
                         line = j<4? line+randomWords[wrd]+" ":line+randomWords[wrd]+"\n";
                     }
                     writeFile.write(line);
+                    writeFile.flush();
                 }
                 message = "Success! File "+incomingData[2]+".txt created!";
             } else {
@@ -136,7 +172,7 @@ class Connection extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
-            message = "Fail! File"+incomingData[2]+".txt could not be created!";
+            message = "Fail! File "+incomingData[2]+".txt could not be created!";
         }
 
         return message;
