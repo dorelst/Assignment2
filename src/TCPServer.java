@@ -1,6 +1,5 @@
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +8,7 @@ public class TCPServer {
         try{
             int serverPort = 7896;
             ServerSocket listenSocket = new ServerSocket(serverPort);
-            System.out.println("Server "+InetAddress.getLocalHost().getHostName()+" is up and running!");
+            System.out.println("Server "+InetAddress.getLocalHost().getHostName()+" is up and running on port "+serverPort+"!");
             while(true) {
                 Socket clientSocket = listenSocket.accept();
                 Connection c = new Connection(clientSocket);
@@ -19,27 +18,44 @@ public class TCPServer {
     }
 }
 class Connection extends Thread {
-    Map<String, String> usersList = new HashMap<>();
-    private DataInputStream in;
-    private DataOutputStream out;
+    private Map<String, String> usersList = new HashMap<>();
+    private BufferedReader in;
+    private BufferedWriter out;
     private Socket clientSocket;
     public Connection (Socket aClientSocket) {
         try {
             clientSocket = aClientSocket;
-            in = new DataInputStream( clientSocket.getInputStream());
-            out =new DataOutputStream( clientSocket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             this.start();
         } catch(IOException e) {System.out.println("Connection:"+e.getMessage());}
     }
     public void run(){
-        String serverResponse;
-        try {           // an echo server
-            String data = in.readUTF();
-            serverResponse = respondToClient(data);
-            out.writeUTF(serverResponse);
-        } catch(EOFException e) {System.out.println("EOF: "+e.getMessage());
-        } catch(IOException e) {System.out.println("IO: "+e.getMessage());
-        } finally { try {clientSocket.close();}catch (IOException e){/*close failed*/}}
+        String serverResponse, clientRequest="";
+        do {
+            try {           // an echo server
+                String data = in.readLine();
+                //System.out.println("data = "+data);
+                if (data != null) {
+                    serverResponse = respondToClient(data);
+                    System.out.println("server response = "+serverResponse);
+                    clientRequest = serverResponse.split(" ", 2)[0];
+                    serverResponse = serverResponse + "\n";
+                    out.write(serverResponse);
+                    out.flush();
+                }
+
+            } catch (EOFException e) {
+                System.out.println("EOF: " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("IO: " + e.getMessage());
+            }
+        } while (!clientRequest.equals("Closed!"));
+
+        try {
+            clientSocket.close();
+        } catch (IOException e) {/*close failed*/}
+
     }
 
     private String respondToClient(String data) {
@@ -54,7 +70,7 @@ class Connection extends Thread {
             case 2: return(createFile(incomingData));
             case 3: return(listFilesOnServer(incomingData));
             case 4: return(transferFile(incomingData));
-            case 5: return(sumarryOfAFile(incomingData));
+            case 5: return(summaryOfAFile(incomingData));
             case 6: return(requestSubsetOfAFile(incomingData));
             case 7: return(deleteFile(incomingData));
             case 8: return(closeConnection(incomingData));
@@ -63,7 +79,7 @@ class Connection extends Thread {
     }
 
     private String closeConnection(String[] incomingData) {
-        return "";
+        return "Closed! Connection from "+incomingData[0]+" successfully closed!";
     }
 
     private String deleteFile(String[] incomingData) {
@@ -74,7 +90,7 @@ class Connection extends Thread {
         return "";
     }
 
-    private String sumarryOfAFile(String[] incomingData) {
+    private String summaryOfAFile(String[] incomingData) {
         return "";
     }
 
@@ -87,7 +103,8 @@ class Connection extends Thread {
     }
 
     private String createFile(String[] incomingData) {
-        return "";
+
+        return "Success! File "+incomingData[2]+".txt created!";
     }
 
     private String registerClient(String[] incomingData) {
@@ -98,7 +115,6 @@ class Connection extends Thread {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        System.out.println("register message = "+message);
         return message;
     }
 }

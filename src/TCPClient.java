@@ -4,30 +4,91 @@ import java.util.Scanner;
 
 public class TCPClient {
 
-    private static String clientName="";
-    private static String serverName="Doru-PC";
+    private String clientName;
+    private String serverName;
+    private Socket server;
+    private BufferedReader in;
+    private BufferedWriter out;
 
-    private static String sendMessage(String message) {
-        Socket s = null;
-        String data="";
-        try{
-            int serverPort = 7896;
-            s = new Socket("DStoian-LEN", serverPort);
-            DataInputStream in = new DataInputStream( s.getInputStream());
-            DataOutputStream out = new DataOutputStream( s.getOutputStream());
-            out.writeUTF(message);   // UTF is a string encoding; see Sec 4.3
-            data = in.readUTF();
-            System.out.println("Received:"+ data) ;
-            return data;
-        }catch (UnknownHostException e){
-            System.out.println("Sock:"+e.getMessage());
-        } catch (EOFException e){System.out.println("EOF:"+e.getMessage());
-        } catch (IOException e){System.out.println("IO:"+e.getMessage());
-        } finally {if(s!=null) try {s.close();}catch (IOException e){/*close failed*/}}
-        return data;
+    public TCPClient() {
+        this.clientName = "";
+        this.serverName = "ZMS-21577-F01";
+        //this.serverName = "Doru-PC";
+
+        this.server = null;
+        this.in = null;
+        this.out = null;
     }
 
-    private static void runClientInterface() {
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public Socket getServer() {
+        return server;
+    }
+
+    public void setServer(Socket server) {
+        this.server = server;
+    }
+
+    public BufferedReader getIn() {
+        return in;
+    }
+
+    public void setIn(BufferedReader in) {
+        this.in = in;
+    }
+
+    public BufferedWriter getOut() {
+        return out;
+    }
+
+    public void setOut(BufferedWriter out) {
+        this.out = out;
+    }
+
+    /*    private static String sendMessage(String message) {
+        Socket server = null;
+        String data = "";
+        try {
+            int serverPort = 7896;
+            //server = new Socket("DStoian-LEN", serverPort);
+            server = new Socket("ZMS-21577-F01", serverPort);
+            BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+            out.write(message);   // UTF is a string encoding; see Sec 4.3
+            data = in.readLine();
+            System.out.println("Received:" + data);
+            return data;
+        } catch (UnknownHostException e) {
+            System.out.println("Sock:" + e.getMessage());
+        } catch (EOFException e) {
+            System.out.println("EOF:" + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IO:" + e.getMessage());
+        } finally {
+            if (server != null) try {
+                server.close();
+            } catch (IOException e) {*//*close failed*//*}
+        }
+        return data;
+    }*/
+
+
+    private void runClientInterface() {
         try {
             clientName = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
@@ -41,7 +102,7 @@ public class TCPClient {
             inputChoice = scanner.nextLine();
 
             switch (inputChoice) {
-                case "1": server=connectToServer(server);
+                case "1": connectToServer();
                     printMenuOptions();
                     break;
                 case "2": createFile();
@@ -62,7 +123,7 @@ public class TCPClient {
                 case "7": deleteFile();
                     printMenuOptions();
                     break;
-                case "8": server = closeConnectionToServer(server);
+                case "8": server = closeConnectionToServer();
                     printMenuOptions();
                     break;
                 case "9": printMenuOptions();
@@ -73,7 +134,7 @@ public class TCPClient {
         //scanner.close();
     }
 
-    private static Socket connectToServer(Socket server) {
+    private void connectToServer() {
         String inputChoice="";
         Scanner scanner = new Scanner(System.in);
         System.out.println("Default Server name is: "+serverName);
@@ -91,18 +152,19 @@ public class TCPClient {
 
         try{
             int serverPort = 7896;
-            server = new Socket(serverName, serverPort);
-            registerToServer(server);
+            setServer(new Socket(serverName, serverPort));
+            setIn(new BufferedReader(new InputStreamReader(getServer().getInputStream())));
+            setOut(new BufferedWriter(new OutputStreamWriter(getServer().getOutputStream())));
+            registerToServer();
         }catch (UnknownHostException e){
             System.out.println("Sock:"+e.getMessage());
         } catch (EOFException e){System.out.println("EOF:"+e.getMessage());
         } catch (IOException e){System.out.println("IO:"+e.getMessage());}
 
-        return server;
     }
 
-    private static void registerToServer(Socket server) {
-        String username, password, registrationCredentials, serverResponse, inputChoice;
+    private void registerToServer() {
+        String username, password, messageForServer, serverResponse, inputChoice="n";
         Scanner scanner = new Scanner(System.in);
 
         do {
@@ -111,36 +173,18 @@ public class TCPClient {
             username = scanner.nextLine();
             System.out.println("Password: ");
             password = scanner.nextLine();
-            registrationCredentials = clientName+"_"+"1_"+username+"_"+password;
-
-            try{
-                DataInputStream in = new DataInputStream( server.getInputStream());
-                DataOutputStream out = new DataOutputStream( server.getOutputStream());
-                out.writeUTF(registrationCredentials);   // UTF is a string encoding; see Sec 4.3
-                serverResponse = in.readUTF();
-                String registrationStatus = serverResponse.split(" ", 2)[0];
-                if (registrationStatus.equals("Success!")) {
-                    System.out.println("Server "+serverName+" responded: "+serverResponse);
-                    return;
-                }
-            }catch (UnknownHostException e){
-                System.out.println("Unknown Host! Sock:"+e.getMessage());
-                return;
-            } catch (EOFException e){
-                System.out.println("EOF:"+e.getMessage());
-                return;
-            } catch (IOException e){
-                System.out.println("IO Error:"+e.getMessage());
-                return;
+            messageForServer = clientName+"_"+"1_"+username+"_"+password;
+            serverResponse = sendMessageToServer(messageForServer);
+            String resultOfServerOperation = serverResponse.split(" ", 2)[0];
+            if (resultOfServerOperation.equals("Fail!")){
+                System.out.println("Connection unsuccessful due to wrong registration issue.");
+                System.out.println("Would you like to try again? (Y/N)");
+                inputChoice = scanner.nextLine();
             }
-
-            System.out.println("Connection unsuccessful due to wrong registration issue.");
-            System.out.println("Would you like to try again? (Y/N)");
-            inputChoice = scanner.nextLine();
         } while ((!inputChoice.equals("n")) && (!inputChoice.equals("N")));
     }
 
-    private static Socket closeConnectionToServer(Socket server) {
+    private Socket closeConnectionToServer() {
         if(server!=null) {
             try {
                 server.close();
@@ -156,25 +200,45 @@ public class TCPClient {
         return server;
     }
 
-    private static void deleteFile() {
+    private void deleteFile() {
     }
 
-    private static void requestSubSetFile() {
+    private void requestSubSetFile() {
     }
 
-    private static void requestSummary() {
+    private void requestSummary() {
     }
 
-    private static void transferFile() {
+    private void transferFile() {
     }
 
-    private static void listFiles() {
+    private void listFiles() {
     }
 
-    private static void createFile() {
+    private void createFile() {
+        if(server==null) {
+            System.out.println("No connection established! Please connect first to a server!");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        String fileName;
+        String messageForServer;
+
+        System.out.println("Please input the file name to be created: ");
+        do {
+            fileName = scanner.nextLine();
+            if (fileName.equals("")) {
+                System.out.println("Empty name not accepted! Try again!");
+            }
+        } while (fileName.equals(""));
+
+        messageForServer = clientName+"_"+"2"+"_"+fileName;
+        sendMessageToServer(messageForServer);
+
     }
 
-    private static void printMenuOptions() {
+    private void printMenuOptions() {
         System.out.println();
         System.out.println("1 - Connect to Server  ----------------+-- 6 - Request a subset of a file");
         System.out.println("2 - Create file -----------------------+-- 7 - Delete file");
@@ -184,8 +248,35 @@ public class TCPClient {
 
     }
 
+    private String sendMessageToServer (String messageForServer) {
+        String serverResponse;
+        try {
+            messageForServer = messageForServer + "\n";
+            System.out.println("message to server = "+messageForServer);
+            getOut().write(messageForServer);   // UTF is a string encoding; see Sec 4.3
+            getOut().flush();
+            serverResponse = getIn().readLine();
+            String serverRequest = serverResponse.split(" ", 2)[0];
+            if (serverRequest.equals("Success!")) {
+                System.out.println("Server "+serverName+" responded: "+serverResponse);
+                return serverResponse;
+            }
+        }catch (UnknownHostException e){
+            System.out.println("Unknown Host! Sock:"+e.getMessage());
+            return ("Fail! "+"Unknown Host! Sock:"+e.getMessage());
+        } catch (EOFException e){
+            System.out.println("EOF:"+e.getMessage());
+            return ("Fail! "+"EOF:"+e.getMessage());
+        } catch (IOException e){
+            System.out.println("IO Error:"+e.getMessage());
+            return ("Fail! "+"IO Error:"+e.getMessage());
+        }
+        return "Fail! Unknown error!";
+    }
+
     public static void main (String args[]) {
-        runClientInterface();
+        TCPClient client = new TCPClient();
+        client.runClientInterface();
     }
 }
 

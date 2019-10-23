@@ -52,7 +52,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TPCClient">
+  <component name="RunManager" selected="Application.TCPServer">
     <configuration name="TCPServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="TCPServer" />
       <module name="Assignment2" />
@@ -88,7 +88,7 @@
       <workItem from="1571701923534" duration="616000" />
       <workItem from="1571703486680" duration="551000" />
       <workItem from="1571781393777" duration="214000" />
-      <workItem from="1571781810603" duration="3460000" />
+      <workItem from="1571781810603" duration="3875000" />
     </task>
     <servers />
   </component>
@@ -107,14 +107,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="data" language="JAVA" />
-        <watch expression="serverResponse" language="JAVA" />
-        <watch expression="out" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
