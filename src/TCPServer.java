@@ -138,7 +138,18 @@ class Connection extends Thread {
     }
 
     private String listFilesOnServer(String[] incomingData) {
-        return "";
+        File folder = new File("Servers Folder");
+        String[] files = folder.list();
+        String message="";
+        if ((files != null) && (files.length != 0)) {
+            for (String file:files) {
+                message=message+file+", ";
+            }
+            message = message.substring(0,message.length()-2)+"\n";
+        } else {
+            message = "No files present on the server!";
+        }
+        return message;
     }
 
     private String createFile(String[] incomingData) {
@@ -160,7 +171,7 @@ class Connection extends Thread {
                     String line = "";
                     for (int j = 0; j<5; j++) {
                         int wrd = (int)(Math.random()*9);
-                        line = j<4? line+randomWords[wrd]+" ":line+randomWords[wrd]+"\n";
+                        line = j<4? line+randomWords[wrd]+" ":line+randomWords[wrd]+"\r\n";
                     }
                     writeFile.write(line);
                     writeFile.flush();

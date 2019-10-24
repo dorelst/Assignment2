@@ -1,3 +1,5 @@
+import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
+
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
@@ -213,10 +215,17 @@ public class TCPClient {
     }
 
     private void listFiles() {
+        if(getServer()==null) {
+            System.out.println("No connection established! Please connect first to a server!");
+            return;
+        }
+        String messageForServer = clientName+"_"+"3";
+        sendMessageToServer(messageForServer);
+
     }
 
     private void createFile() {
-        if(server==null) {
+        if(getServer()==null) {
             System.out.println("No connection established! Please connect first to a server!");
             return;
         }
@@ -249,13 +258,22 @@ public class TCPClient {
     }
 
     private String sendMessageToServer (String messageForServer) {
-        String serverResponse;
+        String serverResponse, stringBuffer;
         try {
             messageForServer = messageForServer + "\n";
             System.out.println("message to server = "+messageForServer);
             getOut().write(messageForServer);   // UTF is a string encoding; see Sec 4.3
             getOut().flush();
             serverResponse = getIn().readLine();
+/*
+            serverResponse = "";
+            stringBuffer = getIn().readLine(true);
+            while (stringBuffer != null) {
+                System.out.println("strinbuffer = "+stringBuffer);
+                serverResponse = stringBuffer;
+                stringBuffer = getIn().readLine();
+            }
+*/
             System.out.println("Server "+serverName+" responded: "+serverResponse);
             return serverResponse;
 /*
