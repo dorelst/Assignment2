@@ -139,7 +139,40 @@ class Connection extends Thread {
     }
 
     private String requestSubsetOfAFile(String[] incomingData) {
-        return "";
+        File fileToSendSeubset = new File("Server Folder",incomingData[2]);
+        boolean fileExists = fileToSendSeubset.exists();
+
+        if (fileExists) {
+
+            try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToSendSeubset), "UTF-8"))) {
+                out.write("File exists! Begin sending a subset of it!\n");
+                out.flush();
+                String line;
+                line = readFile.readLine();
+                while ((line != null) && (line.length()>0)) {
+                    int sendTheLine = (int)(Math.random()*4);
+                    if (sendTheLine == 2) {
+                        out.write(line);
+                        out.flush();
+                        out.write("\n");
+                        out.flush();
+                    }
+                    line = readFile.readLine();
+                }
+                line="\n";
+                out.write(line);
+                out.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+        }
+
+
+        return "Success! File transferred!";
     }
 
     private String summaryOfAFile(String[] incomingData) {
@@ -178,9 +211,9 @@ class Connection extends Thread {
 
     private String transferFile(String[] incomingData) {
         File fileToBeTransfered = new File("Server Folder",incomingData[2]);
-        boolean fielExists = fileToBeTransfered.exists();
+        boolean fileExists = fileToBeTransfered.exists();
 
-        if (fielExists) {
+        if (fileExists) {
 
             try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToBeTransfered), "UTF-8"))) {
                 out.write("File exists! Begin transfer!\n");
