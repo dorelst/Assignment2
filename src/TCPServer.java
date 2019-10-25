@@ -64,14 +64,14 @@ class Connection extends Thread {
     public void run() {
         String serverResponse, clientRequest = "";
         do {
-            try {           // an echo server
+            try {
                 String data = in.readLine();
                 //System.out.println("data = "+data);
                 if (data != null) {
                     serverResponse = respondToClient(data);
                     System.out.println("server response = " + serverResponse);
                     clientRequest = serverResponse.split(" ", 2)[0];
-                    serverResponse = serverResponse + "\n";
+                    serverResponse = serverResponse+"\n";
                     out.write(serverResponse);
                     out.flush();
                 }
@@ -164,7 +164,7 @@ class Connection extends Thread {
                     out.flush();
                     line = readFile.readLine();
                 }
-                line="";
+                line="\n";
                 out.write(line);
                 out.flush();
 
@@ -188,7 +188,7 @@ class Connection extends Thread {
             for (String file:files) {
                 message=message+file+", ";
             }
-            message = message.substring(0,message.length()-2)+"\n";
+            message = message.substring(0,message.length()-2);
         } else {
             message = "No files present on the server!";
         }

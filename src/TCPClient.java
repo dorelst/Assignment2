@@ -202,12 +202,16 @@ public class TCPClient {
                 System.out.println("message to server = "+messageForServer);
                 String serverRequestType = messageForServer.split("_",3)[1];
 
-                getOut().write(messageForServer);   // UTF is a string encoding; see Sec 4.3
+                getOut().write(messageForServer);
                 getOut().flush();
 
                 serverResponse = getIn().readLine();
+                System.out.println("ServerResponse = "+serverResponse);
+                String[] sb = serverResponse.split(" ", 3);
+                String foundFileOnServer = sb[0]+" "+sb[1];
+                System.out.println("findOnServer = "+foundFileOnServer);
 
-                if ((serverRequestType.equals("4")) || (serverRequestType.equals("6"))) {
+                if (((serverRequestType.equals("4")) || (serverRequestType.equals("6"))) && (foundFileOnServer.equals("File exists!"))) {
                     System.out.println("Server "+serverName+" responded: "+serverResponse);
 
                     String fileName = messageForServer.split("_",3)[2];
@@ -240,14 +244,21 @@ public class TCPClient {
                                 writeFile.write(line);
                                 writeFile.flush();
                                 line = getIn().readLine();
-                                System.out.println("in while loop. line = "+line);
                             }
+
+                            serverResponse = getIn().readLine();
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
 
+                    System.out.println("Server "+serverName+" responded: "+serverResponse);
+                    return serverResponse;
+
+                } else {
+                    System.out.println("Server "+serverName+" responded: "+serverResponse);
+                    return serverResponse;
                 }
 /*
             serverResponse = "";
@@ -258,8 +269,6 @@ public class TCPClient {
                 stringBuffer = getIn().readLine();
             }
 */
-                System.out.println("Server "+serverName+" responded: "+serverResponse);
-                return serverResponse;
 /*
             String serverRequest = serverResponse.split(" ", 2)[0];
             if (serverRequest.equals("Success!")) {
@@ -362,19 +371,22 @@ public class TCPClient {
     }
 
     private Socket closeConnectionToServer() {
-        if(server!=null) {
-            try {
-                server.close();
-                server = null;
-                closeStreamToServer();
-            }catch (IOException e){
-                /*close failed*/
-                System.out.println("Connection close failed!");
-            }
-            System.out.println("Connection closed successful! ");
-        } else {
-            System.out.println("There is no connection established to a server. Connect first!");
+        if (getServer() == null) {
+            System.out.println("No connection established! Please connect first to a server!");
+            return null;
         }
+        String messageForServer = clientName + "_" + "8";
+        sendMessageToServer(messageForServer);
+        try {
+
+            closeStreamToServer();
+            getServer().close();
+            setServer(null);
+
+        } catch (IOException e) {
+            System.out.println("Connection close failed!");
+        }
+        System.out.println("Connection closed successful!");
         return server;
     }
 
@@ -415,17 +427,48 @@ public class TCPClient {
         Scanner scanner = new Scanner(System.in);
         String fileName;
         String messageForServer;
-
-        System.out.println("Please input the file name to be transferred: ");
+        boolean invalidFileName = true;
+        boolean tryToTransferFile = true;
         do {
-            fileName = scanner.nextLine();
-            if (fileName.equals("")) {
-                System.out.println("Empty name not accepted! Try again!");
-            }
-        } while (fileName.equals(""));
 
-        messageForServer = clientName+"_"+"4"+"_"+fileName;
-        sendMessageToServer(messageForServer);
+            System.out.println("Please input the file name to be transferred: ");
+            do {
+                fileName = scanner.nextLine();
+                if (fileName.equals("")) {
+                    System.out.println("Empty name not accepted! Try again!");
+                }
+            } while (fileName.equals(""));
+
+            File tempFile = new File("Client Folder", fileName);
+            boolean fileExists = tempFile.exists();
+
+            if (fileExists) {
+                System.out.println("There is already a file on this client with the same name as the one you try to transfer from the server.");
+                System.out.println("Change the name of the file present on this client or choose another file to transfer from the server!");
+                String inputChoice;
+                do {
+                    System.out.println("Would you like to transfer another file? (Y/N)");
+                    inputChoice = scanner.nextLine();
+                } while ((!inputChoice.equals("n")) && (!inputChoice.equals("N")) && (!inputChoice.equals("y")) && (!inputChoice.equals("Y")));
+                switch (inputChoice) {
+                    case "n": tryToTransferFile = false;
+                    break;
+                    case "N": tryToTransferFile = false;
+                    break;
+                    case "y": tryToTransferFile = true;
+                    break;
+                    case "Y": tryToTransferFile = true;
+                }
+            } else {
+                invalidFileName = false;
+                tryToTransferFile = false;
+            }
+        } while (tryToTransferFile);
+
+        if (!invalidFileName){
+            messageForServer = clientName+"_"+"4"+"_"+fileName;
+            sendMessageToServer(messageForServer);
+        }
 
     }
 
