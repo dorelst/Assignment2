@@ -6,12 +6,11 @@ import java.util.Map;
 public class TCPServer {
 
     private static boolean createWorkingDirectory() {
-        boolean fielExists = true;
-        File tempFile = null;
+        boolean fielExists;
+        File tempFile;
         try {
-            tempFile = new File("Servers Folder");
+            tempFile = new File("Server Folder");
             fielExists = tempFile.exists();
-            System.out.println("File = " + tempFile + " exists? = " + fielExists + " and is a file? = " + tempFile.isFile());
             if (!fielExists) {
                 if (tempFile.mkdir()){
                     System.out.println("Server folder successfully created!");
@@ -122,7 +121,21 @@ class Connection extends Thread {
     }
 
     private String deleteFile(String[] incomingData) {
-        return "";
+        File fileToBeDeleted = new File("Server Folder",incomingData[2]);
+        boolean fielExists = fileToBeDeleted.exists();
+
+        if (fielExists) {
+            boolean isFileDeleted = fileToBeDeleted.delete();
+            if (isFileDeleted) {
+                return "Success! File "+incomingData[2]+" successfully deleted from the server!";
+            } else {
+                return "Fail! File "+incomingData[2]+" couldn't be deleted from the server!";
+            }
+
+        } else {
+            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+        }
+
     }
 
     private String requestSubsetOfAFile(String[] incomingData) {
@@ -134,11 +147,41 @@ class Connection extends Thread {
     }
 
     private String transferFile(String[] incomingData) {
-        return "";
+        File fileToBeTransfered = new File("Server Folder",incomingData[2]);
+        boolean fielExists = fileToBeTransfered.exists();
+
+        if (fielExists) {
+
+            try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToBeTransfered), "UTF-8"))) {
+                out.write("File exists! Begin transfer!\n");
+                out.flush();
+                String line;
+                line = readFile.readLine();
+                while ((line != null) && (line.length()>0)) {
+                    out.write(line);
+                    out.flush();
+                    out.write("\n");
+                    out.flush();
+                    line = readFile.readLine();
+                }
+                line="";
+                out.write(line);
+                out.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+        }
+
+
+        return "Success! File transferred!";
     }
 
     private String listFilesOnServer(String[] incomingData) {
-        File folder = new File("Servers Folder");
+        File folder = new File("Server Folder");
         String[] files = folder.list();
         String message="";
         if ((files != null) && (files.length != 0)) {
@@ -154,17 +197,16 @@ class Connection extends Thread {
 
     private String createFile(String[] incomingData) {
         String message;
-        boolean fielExists=true;
-        File tempFile=null;
+        boolean fielExists;
+        File tempFile;
         try  {
-            //tempFile = new File("Server Folder"+File.separator+incomingData[2]+".txt");
-            tempFile = new File("Servers Folder",incomingData[2]+".txt");
+            //tempFile = new File("Server Folder"+File.separator+incomingData[2]);
+            tempFile = new File("Server Folder",incomingData[2]);
             fielExists = tempFile.exists();
-            System.out.println("File = "+tempFile+" exists? = "+fielExists+" and is a file? = "+tempFile.isFile());
 
             if (!fielExists) {
-                BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Servers Folder"+File.separator+incomingData[2]+".txt"), "UTF-8"));
-                //BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
+                //BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Server Folder"+File.separator+incomingData[2]), "UTF-8"));
+                BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
                 String [] randomWords = new String[]{"aaaaaaa", "bbbbbbb", "ccccccc", "ddddddd", "eeeeeee", "fffffff", "ggggggg", "hhhhhhh", "iiiiiii", "jjjjjjj"};
 
                 for(int i = 0; i<10; i++) {
@@ -176,14 +218,15 @@ class Connection extends Thread {
                     writeFile.write(line);
                     writeFile.flush();
                 }
-                message = "Success! File "+incomingData[2]+".txt created!";
+                message = "Success! File "+incomingData[2]+" created!";
+                writeFile.close();
             } else {
-                message = "Fail! Another file with name "+incomingData[2]+".txt already present. Please change the name!";
+                message = "Fail! Another file with name "+incomingData[2]+" already present. Please change the name!";
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            message = "Fail! File "+incomingData[2]+".txt could not be created!";
+            message = "Fail! File "+incomingData[2]+" could not be created!";
         }
 
         return message;
