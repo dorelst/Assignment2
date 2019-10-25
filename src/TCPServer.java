@@ -122,9 +122,9 @@ class Connection extends Thread {
 
     private String deleteFile(String[] incomingData) {
         File fileToBeDeleted = new File("Server Folder",incomingData[2]);
-        boolean fielExists = fileToBeDeleted.exists();
+        boolean fileExists = fileToBeDeleted.exists();
 
-        if (fielExists) {
+        if (fileExists) {
             boolean isFileDeleted = fileToBeDeleted.delete();
             if (isFileDeleted) {
                 return "Success! File "+incomingData[2]+" successfully deleted from the server!";
@@ -143,7 +143,37 @@ class Connection extends Thread {
     }
 
     private String summaryOfAFile(String[] incomingData) {
-        return "";
+        File fileForSummary = new File("Server Folder",incomingData[2]);
+        boolean fileExists = fileForSummary.exists();
+
+        if (fileExists) {
+            int numberOfLines=0;
+            int numberOfWords=0;
+
+            try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileForSummary), "UTF-8"))) {
+
+                String line;
+                while ((line=readFile.readLine()) != null) {
+                    numberOfLines++;
+                    String[] words = line.split(" ");
+                    numberOfWords = numberOfWords + words.length;
+                }
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String message = "Success! This is the requested summary: file "+incomingData[2]+" has "+numberOfLines+" lines, and "+numberOfWords+" words!";
+            return message;
+
+        } else {
+            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+        }
+
     }
 
     private String transferFile(String[] incomingData) {
@@ -209,7 +239,8 @@ class Connection extends Thread {
                 BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
                 String [] randomWords = new String[]{"aaaaaaa", "bbbbbbb", "ccccccc", "ddddddd", "eeeeeee", "fffffff", "ggggggg", "hhhhhhh", "iiiiiii", "jjjjjjj"};
 
-                for(int i = 0; i<10; i++) {
+                int numberOfLines = (int)(Math.random()*5)+5;
+                for(int i = 0; i<numberOfLines; i++) {
                     String line = "";
                     for (int j = 0; j<5; j++) {
                         int wrd = (int)(Math.random()*9);
