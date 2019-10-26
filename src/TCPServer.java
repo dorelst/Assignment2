@@ -1,5 +1,9 @@
+import javax.xml.bind.DatatypeConverter;
 import java.net.*;
 import java.io.*;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -147,6 +151,7 @@ class Connection extends Thread {
             try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToSendSeubset), "UTF-8"))) {
                 out.write("File exists! Begin sending a subset of it!\n");
                 out.flush();
+                StringBuilder subsetOfFile = new StringBuilder();
                 String line;
                 line = readFile.readLine();
                 while ((line != null) && (line.length()>0)) {
@@ -156,12 +161,26 @@ class Connection extends Thread {
                         out.flush();
                         out.write("\n");
                         out.flush();
+                        subsetOfFile.append(line);
+                        subsetOfFile.append("\n");
                     }
                     line = readFile.readLine();
                 }
                 line="\n";
                 out.write(line);
                 out.flush();
+
+                System.out.println("string sent: ");
+                System.out.println(subsetOfFile.toString());
+                String checksum = calculateChecksumForString(subsetOfFile.toString());
+                out.write(checksum);
+                out.flush();
+
+                line="\n";
+                out.write(line);
+                out.flush();
+
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -172,7 +191,7 @@ class Connection extends Thread {
         }
 
 
-        return "Success! File transferred!";
+        return "Success! Subset of the file "+incomingData[2]+" transferred!";
     }
 
     private String summaryOfAFile(String[] incomingData) {
@@ -217,6 +236,10 @@ class Connection extends Thread {
 
             try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToBeTransfered), "UTF-8"))) {
                 out.write("File exists! Begin transfer!\n");
+                out.flush();
+                String checksum = generateCheckSum(incomingData[2]);
+                checksum = checksum+"\n";
+                out.write(checksum);
                 out.flush();
                 String line;
                 line = readFile.readLine();
@@ -306,4 +329,73 @@ class Connection extends Thread {
         }
         return message;
     }
+
+    private String generateCheckSum(String filename) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            String checksum = calculateChecksum2(filename, md);
+            System.out.println("Checksum length = "+checksum.length()+" and the checksum1 is: ");
+            System.out.println(checksum);
+
+            return checksum;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private String calculateChecksum(String filename, MessageDigest md) {
+        File tempFile = new File("Server Folder", filename);
+
+        try (DigestInputStream dis = new DigestInputStream(new FileInputStream(tempFile), md)) {
+            while (dis.read() != -1) ; //empty loop to clear the data
+            md = dis.getMessageDigest();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+
+    private String calculateChecksum2 (String filename, MessageDigest md) {
+        File tempFile = new File("Server Folder", filename);
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
+            byte[] buffer = new byte[1024];
+            int nread;
+            while ((nread = bis.read(buffer)) != -1) {
+                md.update(buffer, 0, nread);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+
+    private String calculateChecksumForString (String messageForClient) {
+        String result = "";
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] hash = digest.digest(messageForClient.getBytes("UTF-8"));
+            result = DatatypeConverter.printHexBinary(hash).toLowerCase();
+            System.out.println("checksum lenght = "+result.length()+" and result is:");
+            System.out.println(result);
+            return result;
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+
 }

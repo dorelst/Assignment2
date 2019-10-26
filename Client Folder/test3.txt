@@ -1,9 +1,0 @@
-eeeeeee fffffff eeeeeee eeeeeee eeeeeee
-fffffff ccccccc bbbbbbb fffffff iiiiiii
-ggggggg ggggggg ggggggg hhhhhhh bbbbbbb
-ggggggg ddddddd aaaaaaa bbbbbbb ccccccc
-hhhhhhh ddddddd aaaaaaa hhhhhhh eeeeeee
-fffffff iiiiiii ccccccc hhhhhhh iiiiiii
-ddddddd ddddddd bbbbbbb aaaaaaa hhhhhhh
-aaaaaaa ddddddd bbbbbbb bbbbbbb iiiiiii
-fffffff eeeeeee aaaaaaa iiiiiii eeeeeee

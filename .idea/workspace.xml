@@ -3,6 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8edaa7c3-872a-4d66-a707-427f1ce3cd53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client Folder/test1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client Folder/test2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client Folder/test3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPServer.java" afterDir="false" />
     </list>

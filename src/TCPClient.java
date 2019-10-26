@@ -1,7 +1,11 @@
 import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
 
+import javax.xml.bind.DatatypeConverter;
 import java.net.*;
 import java.io.*;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class TCPClient {
@@ -14,8 +18,8 @@ public class TCPClient {
 
     public TCPClient() {
         this.clientName = "";
-        this.serverName = "ZMS-21577-F01";
-        //this.serverName = "Doru-PC";
+        //this.serverName = "ZMS-21577-F01";
+        this.serverName = "Doru-PC";
 
         this.server = null;
         this.in = null;
@@ -239,6 +243,9 @@ public class TCPClient {
     private String receiveSubsetOfAFile(String messageForServer) {
         String serverResponse;
         StringBuilder subsetOfFile = new StringBuilder();
+        String serverCheckSum;
+        String filename = messageForServer.split("_",3)[2];
+        filename = filename.substring(0, filename.length()-1);
 
         try {
             String line = getIn().readLine();
@@ -248,6 +255,7 @@ public class TCPClient {
                 line = getIn().readLine();
             }
 
+            serverCheckSum = getIn().readLine();
             serverResponse = getIn().readLine();
 
         } catch (IOException e) {
@@ -255,17 +263,31 @@ public class TCPClient {
             return "Fail! Error transferring the file!";
         }
 
-        System.out.println("Client " + getClientName() + ": Subset of the "+messageForServer.substring(0, messageForServer.split("_",3)[2].length()-1)+" successfully received by the client!");
-        System.out.println("The subset is:");
-        System.out.println(subsetOfFile);
-        System.out.println("Server " + serverName + ": " + serverResponse);
+        String checksum = calculateChecksumForString(subsetOfFile.toString());
+        if (checksum.equals(serverCheckSum)) {
+            System.out.println("Client " + getClientName() + ": Subset of the "+filename+" file successfully received by the client!");
+            System.out.println("Calculated checksum for it is: "+checksum);
+            System.out.println("The subset is:");
+            System.out.println(subsetOfFile);
+            System.out.println("Server " + serverName + ": " + serverResponse);
+        } else {
+            System.out.println("Message received but with errors!");
+            System.out.println("Subset received length = "+subsetOfFile.length()+" and is:");
+            System.out.println(subsetOfFile);
+            System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
+            System.out.println(checksum);
+            System.out.println("The checksum received has a length of "+serverCheckSum.length()+" and is:");
+            System.out.println(serverCheckSum);
+            return "Fail! Error transferring file!";
+        }
+
 
         return serverResponse;
     }
 
     private String receiveFile(String messageForServer) {
 
-        String serverResponse;
+        String serverResponse, serverChecksum;
         String fileName = messageForServer.split("_",3)[2];
         fileName = fileName.substring(0,fileName.length()-1);
         File tempFile = new File("Client Folder", fileName);
@@ -278,6 +300,9 @@ public class TCPClient {
         } else {
 
             try (BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));) {
+                serverChecksum = getIn().readLine();
+                System.out.println("Server checksum length = "+serverChecksum.length()+" and the checksum: ");
+                System.out.println(serverChecksum);
                 String line = getIn().readLine();
                 while ((line != null) && (line.length()>0)) {
                     line = line + "\n";
@@ -293,12 +318,22 @@ public class TCPClient {
                 return "Fail! Error transferring the file!";
             }
 
-            System.out.println("Client "+getClientName()+": File successfully transferred to the client!");
-            System.out.println("Server "+serverName+": "+serverResponse);
-            return serverResponse;
+            String checksum = generateCheckSum(fileName);
+
+            if (checksum.equals(serverChecksum)) {
+                System.out.println("Client "+getClientName()+": File successfully transferred to the client!");
+                System.out.println("Client checksum length = "+checksum.length()+" and the checksum: ");
+                System.out.println(checksum);
+                System.out.println("Server "+serverName+": "+serverResponse);
+                return serverResponse;
+            } else {
+                System.out.println("Client checksum length = "+checksum.length()+" and the checksum: ");
+                System.out.println(checksum);
+                System.out.println("Fail! File transferred but with errors. Checksums don't match!");
+                return "Fail! File transferred but with errors. Checksums don't match!";
+            }
 
         }
-
 
     }
 
@@ -553,6 +588,68 @@ public class TCPClient {
         messageForServer = clientName+"_"+"2"+"_"+fileName;
         sendMessageToServer(messageForServer);
 
+    }
+
+    private String generateCheckSum(String filename) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            String checksum = calculateChecksum2(filename, md);
+            return checksum;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private String calculateChecksum(String filename, MessageDigest md) {
+        File tempFile = new File("Client Folder", filename);
+
+        try (DigestInputStream dis = new DigestInputStream(new FileInputStream(tempFile), md)) {
+            while (dis.read() != -1) ; //empty loop to clear the data
+            md = dis.getMessageDigest();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+
+    private String calculateChecksum2 (String filename, MessageDigest md) {
+        File tempFile = new File("Server Folder", filename);
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
+            byte[] buffer = new byte[1024];
+            int nread;
+            while ((nread = bis.read(buffer)) != -1) {
+                md.update(buffer, 0, nread);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+
+    private String calculateChecksumForString (String messageForClient) {
+        String result = "";
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] hash = digest.digest(messageForClient.getBytes("UTF-8"));
+            result = DatatypeConverter.printHexBinary(hash).toLowerCase();
+            return result;
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
     }
 
     private void printMenuOptions() {
