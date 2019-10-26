@@ -1,7 +1,9 @@
-hhhhhhh ggggggg ggggggg iiiiiii fffffff
-ddddddd aaaaaaa eeeeeee iiiiiii aaaaaaa
-aaaaaaa aaaaaaa hhhhhhh ggggggg hhhhhhh
-ggggggg ccccccc eeeeeee hhhhhhh hhhhhhh
-fffffff hhhhhhh bbbbbbb ddddddd aaaaaaa
-eeeeeee eeeeeee fffffff fffffff ggggggg
-ggggggg fffffff ccccccc ddddddd ggggggg
+Xdddddd Xeeeeee Xbbbbbb Xdddddd Xaaaaaa
+Xaaaaaa Xaaaaaa Xgggggg Xhhhhhh Xgggggg
+Xdddddd Xaaaaaa Xcccccc Xaaaaaa Xiiiiii
+Xaaaaaa Xhhhhhh Xiiiiii Xgggggg Xdddddd
+Xbbbbbb Xffffff Xaaaaaa Xdddddd Xcccccc
+Xiiiiii Xhhhhhh Xeeeeee Xbbbbbb Xcccccc
+Xhhhhhh Xgggggg Xffffff Xeeeeee Xiiiiii
+Xhhhhhh Xiiiiii Xeeeeee Xbbbbbb Xffffff
+Xdddddd Xdddddd Xhhhhhh Xaaaaaa Xcccccc

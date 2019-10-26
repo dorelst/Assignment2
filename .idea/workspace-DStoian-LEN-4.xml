@@ -4,10 +4,10 @@
     <list default="true" id="8edaa7c3-872a-4d66-a707-427f1ce3cd53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client Folder/test.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client Folder/test1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client Folder/test1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client Folder/test1.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client Folder/test2.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Client Folder/test3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server Folder/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server Folder/test.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Server Folder/test1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test1.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server Folder/test2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server Folder/test3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test3.txt" afterDir="false" />
@@ -139,6 +139,15 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/TCPClient.java</url>
+          <line>592</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="data" language="JAVA" />

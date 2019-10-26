@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.DigestInputStream;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -85,8 +86,9 @@ class Connection extends Thread {
         usersList.put(incomingData[2], incomingData[3]);
         String message="";
         try {
-            message = "Success! User "+incomingData[0]+" registered to "+ InetAddress.getLocalHost().getHostName()+" server!";
+            message = "Success! Client "+incomingData[0]+" registered to "+ InetAddress.getLocalHost().getHostName()+" server under user "+incomingData[2]+"!";
         } catch (UnknownHostException e) {
+            message = "Success! Client "+incomingData[0]+" registered to server under user "+incomingData[2]+", but server name couldn't be retrieve!";
             e.printStackTrace();
         }
         return message;
@@ -104,7 +106,7 @@ class Connection extends Thread {
             if (!fileExists) {
                 //BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Server Folder"+File.separator+incomingData[2]), "UTF-8"));
                 BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
-                String [] randomWords = new String[]{"aaaaaaa", "bbbbbbb", "ccccccc", "ddddddd", "eeeeeee", "fffffff", "ggggggg", "hhhhhhh", "iiiiiii", "jjjjjjj"};
+                String [] randomWords = new String[]{"Xaaaaaa", "Xbbbbbb", "Xcccccc", "Xdddddd", "Xeeeeee", "Xffffff", "Xgggggg", "Xhhhhhh", "Xiiiiii", "Xjjjjjj"};
 
                 int numberOfLines = (int)(Math.random()*5)+5;
                 for(int i = 0; i<numberOfLines; i++) {
@@ -116,15 +118,15 @@ class Connection extends Thread {
                     writeFile.write(line);
                     writeFile.flush();
                 }
-                message = "Success! File "+incomingData[2]+" created!";
+                message = "Success! File "+incomingData[2]+" created by "+incomingData[0]+" client!";
                 writeFile.close();
             } else {
-                message = "Fail! Another file with name "+incomingData[2]+" already present. Please change the name!";
+                message = "Fail! Another file with name "+incomingData[2]+" already present. "+incomingData[0]+" change the name, please!";
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            message = "Fail! File "+incomingData[2]+" could not be created!";
+            message = "Fail! File "+incomingData[2]+" could not be created by "+incomingData[0]+" client!";
         }
 
         return message;
@@ -133,14 +135,14 @@ class Connection extends Thread {
     private String listFilesOnServer(String[] incomingData) {
         File folder = new File("Server Folder");
         String[] files = folder.list();
-        String message="";
+        String message="List of files for client "+incomingData[0]+": ";
         if ((files != null) && (files.length != 0)) {
             for (String file:files) {
                 message=message+file+", ";
             }
             message = message.substring(0,message.length()-2);
         } else {
-            message = "No files present on the server!";
+            message = "No files present on the server! "+incomingData[0]+" try later, or create a file, please!";
         }
         return message;
     }
@@ -161,6 +163,7 @@ class Connection extends Thread {
                 String line;
                 line = readFile.readLine();
                 while ((line != null) && (line.length()>0)) {
+                    line = arbitraryFailure(line);
                     line = encryptOutGoingMessage(line);
                     line = line + "\n";
                     out.write(line);
@@ -178,10 +181,10 @@ class Connection extends Thread {
             }
 
         } else {
-            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+            return "Fail! File "+incomingData[2]+" requested by "+incomingData[0]+" client doesn't exist on the server! ";
         }
 
-        return "Success! File transferred!";
+        return "Success! File "+incomingData[2]+" requested by "+incomingData[0]+" client transferred!";
     }
 
     private String summaryOfAFile(String[] incomingData) {
@@ -205,11 +208,10 @@ class Connection extends Thread {
                 e.printStackTrace();
             }
 
-            String message = "Success! This is the requested summary: file "+incomingData[2]+" has "+numberOfLines+" lines, and "+numberOfWords+" words!";
-            return message;
+            return "Success! This is the requested summary, for client "+incomingData[0]+": file "+incomingData[2]+" has "+numberOfLines+" lines, and "+numberOfWords+" words!";
 
         } else {
-            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+            return "Fail! Client "+incomingData[0]+" asked a summary for file "+incomingData[2]+", but the file doesn't exist on the server!";
         }
 
     }
@@ -231,6 +233,7 @@ class Connection extends Thread {
                     if (sendTheLine == 2) {
                         subsetOfFile.append(line);
                         subsetOfFile.append("\n");
+                        line = arbitraryFailure(line);
                         line = encryptOutGoingMessage(line);
                         line = line + "\n";
                         out.write(line);
@@ -259,10 +262,10 @@ class Connection extends Thread {
             }
 
         } else {
-            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+            return "Fail! Client "+incomingData[0]+" requested a subset for file "+incomingData[2]+", but the file doesn't exist on the server!";
         }
 
-        return "Success! Subset of the file "+incomingData[2]+" transferred!";
+        return "Success! Subset of the file "+incomingData[2]+" transferred to "+incomingData[0]+" client!";
     }
 
     private String deleteFile(String[] incomingData) {
@@ -272,19 +275,29 @@ class Connection extends Thread {
         if (fileExists) {
             boolean isFileDeleted = fileToBeDeleted.delete();
             if (isFileDeleted) {
-                return "Success! File "+incomingData[2]+" successfully deleted from the server!";
+                return "Success! File "+incomingData[2]+" successfully deleted from the server by "+incomingData[0]+" client!";
             } else {
-                return "Fail! File "+incomingData[2]+" couldn't be deleted from the server!";
+                return "Fail! File "+incomingData[2]+" couldn't be deleted from the server by "+incomingData[0]+" client!";
             }
 
         } else {
-            return "Fail! File "+incomingData[2]+" doesn't exist on the server!";
+            return "Fail! Client "+incomingData[0]+" tried to delete the file "+incomingData[2]+", but the file doesn't exist on the server!";
         }
 
     }
 
     private String closeConnection(String[] incomingData) {
         return "Closed! Connection from "+incomingData[0]+" successfully closed!";
+    }
+
+    private String arbitraryFailure(String messageToBeSent) {
+        int sendCorruptedMessage = (int)(Math.random()*10);
+        if (sendCorruptedMessage == 6) {
+            System.out.println("Corruption just happened!");
+            return messageToBeSent.substring(1);
+        } else {
+            return messageToBeSent;
+        }
     }
 
     private String generateCheckSum(String filename) {
@@ -301,7 +314,41 @@ class Connection extends Thread {
         }
     }
 
+/*
     private String calculateChecksum (String filename, MessageDigest md) {
+        System.out.println("Calculate checksum for file : "+filename);
+        File tempFile = new File("Server Folder", filename);
+        InputStream is = null;
+        try {
+            is = new FileInputStream(tempFile);
+            is = new DigestInputStream(is, md);
+            byte[] buffer = new byte[1024];
+            int nread;
+            while ((nread = is.read(buffer)) != -1) {
+                md.update(buffer, 0, nread);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+*/
+
+
+    private String calculateChecksum (String filename, MessageDigest md) {
+        System.out.println("Calculate checksum for file : "+filename);
         File tempFile = new File("Server Folder", filename);
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
             byte[] buffer = new byte[1024];
@@ -319,6 +366,7 @@ class Connection extends Thread {
         }
         return result.toString();
     }
+
 
     private String calculateChecksumForString (String messageForClient) {
         String result = "";

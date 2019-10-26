@@ -236,6 +236,7 @@ public class TCPClient {
         String messageForServer;
         boolean invalidFileName = true;
         boolean tryToTransferFile = true;
+        String inputChoice;
         do {
 
             System.out.println("Please input the file name to be transferred: ");
@@ -252,7 +253,6 @@ public class TCPClient {
             if (fileExists) {
                 System.out.println("There is already a file on this client with the same name as the one you try to transfer from the server.");
                 System.out.println("Change the name of the file present on this client or choose another file to transfer from the server!");
-                String inputChoice;
                 do {
                     System.out.println("Would you like to transfer another file? (Y/N)");
                     inputChoice = scanner.nextLine();
@@ -273,8 +273,31 @@ public class TCPClient {
         } while (tryToTransferFile);
 
         if (!invalidFileName){
+            tryToTransferFile = false;
             messageForServer = clientName+"_"+"4"+"_"+fileName;
-            sendMessageToServer(messageForServer);
+            do {
+                String serverResponse = sendMessageToServer(messageForServer).split(" ", 2)[0];
+                if (serverResponse.equals("Fail!")) {
+                    do {
+                        System.out.println("Would you like to try again? (Y/N)");
+                        inputChoice = scanner.nextLine();
+                    } while ((!inputChoice.equals("n")) && (!inputChoice.equals("N")) && (!inputChoice.equals("y")) && (!inputChoice.equals("Y")));
+
+                    switch (inputChoice) {
+                        case "n": tryToTransferFile = false;
+                            break;
+                        case "N": tryToTransferFile = false;
+                            break;
+                        case "y": tryToTransferFile = true;
+                            break;
+                        case "Y": tryToTransferFile = true;
+                            break;
+                    }
+
+                } else {
+                    tryToTransferFile = false;
+                }
+            } while (tryToTransferFile);
         }
 
     }
@@ -318,9 +341,37 @@ public class TCPClient {
             }
         } while (fileName.equals(""));
 
-        messageForServer = clientName + "_" + "6" + "_" + fileName;
-        sendMessageToServer(messageForServer);
+        //messageForServer = clientName + "_" + "6" + "_" + fileName;
+        //sendMessageToServer(messageForServer);
 
+        boolean tryToTransferFile = false;
+        String inputChoice;
+
+        messageForServer = clientName+"_"+"6"+"_"+fileName;
+
+        do {
+            String serverResponse = sendMessageToServer(messageForServer).split(" ", 2)[0];
+            if (serverResponse.equals("Fail!")) {
+                do {
+                    System.out.println("Would you like to try again? (Y/N)");
+                    inputChoice = scanner.nextLine();
+                } while ((!inputChoice.equals("n")) && (!inputChoice.equals("N")) && (!inputChoice.equals("y")) && (!inputChoice.equals("Y")));
+
+                switch (inputChoice) {
+                    case "n": tryToTransferFile = false;
+                        break;
+                    case "N": tryToTransferFile = false;
+                        break;
+                    case "y": tryToTransferFile = true;
+                        break;
+                    case "Y": tryToTransferFile = true;
+                        break;
+                }
+
+            } else {
+                tryToTransferFile = false;
+            }
+        } while (tryToTransferFile);
     }
 
     private void deleteFile() {
@@ -437,7 +488,7 @@ public class TCPClient {
                 String line = getIn().readLine();
                 while ((line != null) && (line.length()>0)) {
                     line = decryptReceivedMessage(line);
-                    line = line + "\n";
+                    line = line + "\r\n";
                     writeFile.write(line);
                     writeFile.flush();
                     line = getIn().readLine();
@@ -453,7 +504,7 @@ public class TCPClient {
             String checksum = generateCheckSum(fileName);
 
             if (checksum.equals(serverChecksum)) {
-                System.out.println("Client "+getClientName()+": File successfully transferred to the client!");
+                System.out.println("Client "+getClientName()+": Success! File successfully transferred to the client!\n");
                 System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
                 System.out.println(checksum);
                 System.out.println("The checksum received has a length of "+serverChecksum.length()+" and is:");
@@ -461,12 +512,18 @@ public class TCPClient {
                 System.out.println("Server "+serverName+": "+serverResponse);
                 return serverResponse;
             } else {
-                System.out.println("File "+fileName+" transferred but with errors!");
+                System.out.println("Client "+getClientName()+": Fail! File "+fileName+" transferred but with errors!\n");
                 System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
                 System.out.println(checksum);
                 System.out.println("The checksum received has a length of "+serverChecksum.length()+" and is:");
                 System.out.println(serverChecksum);
                 System.out.println("Fail! File "+fileName+" transferred but with errors. Checksums don't match!");
+                boolean isFileDeleted = tempFile.delete();
+                if (isFileDeleted) {
+                    System.out.println("Corrupted file successfully deleted from client "+getClientName()+"!");
+                } else {
+                    System.out.println("Client "+getClientName()+" couldn't delete corrupted file "+fileName+"!");
+                }
                 return "Fail! File transferred but with errors. Checksums don't match!";
             }
 
@@ -502,7 +559,7 @@ public class TCPClient {
         String checksum = calculateChecksumForString(subsetOfFile.toString());
 
         if (checksum.equals(serverCheckSum)) {
-            System.out.println("Client " + getClientName() + ": Subset of the "+filename+" file successfully received by the client!\n");
+            System.out.println("Client " + getClientName() + ": Success! Subset of the "+filename+" file successfully received by the client!\n");
             System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
             System.out.println(checksum);
             System.out.println("The checksum received has a length of "+serverCheckSum.length()+" and is:");
@@ -511,14 +568,14 @@ public class TCPClient {
             System.out.println(subsetOfFile);
             System.out.println("Server " + serverName + ": " + serverResponse);
         } else {
-            System.out.println("Client " + getClientName() + ": Message received but with errors!\n");
+            System.out.println("Client " + getClientName() + ": Fail! Message received but with errors!\n");
             System.out.println("Subset received length = "+subsetOfFile.length()+" and is:");
             System.out.println(subsetOfFile);
             System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
             System.out.println(checksum);
             System.out.println("The checksum received has a length of "+serverCheckSum.length()+" and is:");
             System.out.println(serverCheckSum);
-            return "Fail! Error transferring file!";
+            return "Fail! Error receiving subset for the file "+filename+"!";
         }
 
 
@@ -553,16 +610,49 @@ public class TCPClient {
     private String generateCheckSum(String filename) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            String checksum = calculateChecksum(filename, md);
-            return checksum;
+            return calculateChecksum(filename, md);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return "";
         }
     }
 
+/*
     private String calculateChecksum (String filename, MessageDigest md) {
-        File tempFile = new File("Server Folder", filename);
+        System.out.println(""Calculate checksum for file : "+filename);
+        File tempFile = new File("Client Folder", filename);
+        InputStream is = null;
+        try {
+            is = new FileInputStream(tempFile);
+            is = new DigestInputStream(is, md);
+            byte[] buffer = new byte[1024];
+            int nread;
+            while ((nread = is.read(buffer)) != -1) {
+                md.update(buffer, 0, nread);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+*/
+
+
+    private String calculateChecksum (String filename, MessageDigest md) {
+        System.out.println("Calculate checksum for file : "+filename);
+        File tempFile = new File("Client Folder", filename);
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
             byte[] buffer = new byte[1024];
             int nread;
@@ -579,6 +669,7 @@ public class TCPClient {
         }
         return result.toString();
     }
+
 
     private String calculateChecksumForString (String messageForClient) {
         String result = "";
