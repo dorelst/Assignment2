@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8edaa7c3-872a-4d66-a707-427f1ce3cd53" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Connection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPServer.java" afterDir="false" />
     </list>
@@ -15,20 +13,6 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand />
-    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -67,7 +51,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TCPServer">
+  <component name="RunManager" selected="Application.TPCClient">
     <configuration name="TCPServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="TCPServer" />
       <module name="Assignment2" />
@@ -107,10 +91,7 @@
       <workItem from="1571922398633" duration="15755000" />
       <workItem from="1571961825548" duration="6008000" />
       <workItem from="1572061303393" duration="275000" />
-      <workItem from="1572062162803" duration="770000" />
-      <workItem from="1572101938531" duration="3477000" />
-      <workItem from="1572105845750" duration="397000" />
-      <workItem from="1572107526925" duration="1093000" />
+      <workItem from="1572062162803" duration="1039000" />
     </task>
     <servers />
   </component>

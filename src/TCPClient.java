@@ -1,11 +1,12 @@
-import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
 
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.net.*;
 import java.io.*;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class TCPClient {
@@ -66,33 +67,6 @@ public class TCPClient {
         this.out = out;
     }
 
-    /*    private static String sendMessage(String message) {
-        Socket server = null;
-        String data = "";
-        try {
-            int serverPort = 7896;
-            //server = new Socket("DStoian-LEN", serverPort);
-            server = new Socket("ZMS-21577-F01", serverPort);
-            BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
-            out.write(message);   // UTF is a string encoding; see Sec 4.3
-            data = in.readLine();
-            System.out.println("Received:" + data);
-            return data;
-        } catch (UnknownHostException e) {
-            System.out.println("Sock:" + e.getMessage());
-        } catch (EOFException e) {
-            System.out.println("EOF:" + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO:" + e.getMessage());
-        } finally {
-            if (server != null) try {
-                server.close();
-            } catch (IOException e) {*//*close failed*//*}
-        }
-        return data;
-    }*/
-
 
     private void runClientInterface() {
 
@@ -103,9 +77,6 @@ public class TCPClient {
                 e.printStackTrace();
             }
 
-            //testCreateFile("test1.txt");
-
-            Socket server=null;
             String inputChoice;
             Scanner scanner = new Scanner(System.in);
             printMenuOptions();
@@ -142,17 +113,17 @@ public class TCPClient {
                 }
 
             } while (!inputChoice.equals("0"));
-            //scanner.close();
+            scanner.close();
         }
     }
 
     private static boolean createWorkingDirectory() {
-        boolean fielExists;
+        boolean fileExists;
         File tempFile;
         try {
             tempFile = new File("Client Folder");
-            fielExists = tempFile.exists();
-            if (!fielExists) {
+            fileExists = tempFile.exists();
+            if (!fileExists) {
                 if (tempFile.mkdir()){
                     System.out.println("Server folder successfully created!");
                     return true;
@@ -169,172 +140,6 @@ public class TCPClient {
             System.out.println("Could not crete Server Folder!");
             return false;
         }
-    }
-
-/*
-    private void testCreateFile(String filename) {
-        File tempFile = new File("Client Folder", filename);
-        boolean fileExists = tempFile.exists();
-
-        if (fileExists) {
-            System.out.println("File already created!");
-        } else {
-
-            try {
-                FileOutputStream fos = new FileOutputStream(tempFile);
-                System.out.println("fos created");
-                OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-                System.out.println("osw created");
-                BufferedWriter writeFile = new BufferedWriter(osw);
-                System.out.println("bw created");
-                System.out.println("File Created!");
-                writeFile.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-*/
-
-    private String sendMessageToServer(String messageForServer) {
-
-        String serverResponse;
-
-        try {
-            messageForServer = messageForServer + "\n";
-            System.out.println("message to server = " + messageForServer);
-            String serverRequestType = messageForServer.split("_", 3)[1];
-
-            getOut().write(messageForServer);
-            getOut().flush();
-
-            serverResponse = getIn().readLine();
-            //System.out.println("ServerResponse = "+serverResponse);
-            String[] sb = serverResponse.split(" ", 3);
-            String foundFileOnServer = sb[0] + " " + sb[1];
-
-            if (((serverRequestType.equals("4")) || (serverRequestType.equals("6"))) && (foundFileOnServer.equals("File exists!"))) {
-                System.out.println("Server " + serverName + ": " + serverResponse);
-                if (serverRequestType.equals("4")) {
-                    serverResponse = receiveFile(messageForServer);
-                } else {
-                    serverResponse = receiveSubsetOfAFile(messageForServer);
-                }
-
-                return serverResponse;
-
-            } else {
-                System.out.println("Server " + serverName + ": " + serverResponse);
-                return serverResponse;
-            }
-        } catch (UnknownHostException e) {
-            System.out.println("Unknown Host! Sock:" + e.getMessage());
-            return ("Fail! " + "Unknown Host! Sock:" + e.getMessage());
-        } catch (EOFException e) {
-            System.out.println("EOF:" + e.getMessage());
-            return ("Fail! " + "EOF:" + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO Error:" + e.getMessage());
-            return ("Fail! " + "IO Error:" + e.getMessage());
-        }
-
-    }
-
-    private String receiveSubsetOfAFile(String messageForServer) {
-        String serverResponse;
-        StringBuilder subsetOfFile = new StringBuilder();
-        String serverCheckSum;
-        String filename = messageForServer.split("_",3)[2];
-        filename = filename.substring(0, filename.length()-1);
-
-        try {
-            String line = getIn().readLine();
-            while ((line != null) && (line.length() > 0)) {
-                line = line + "\n";
-                subsetOfFile.append(line);
-                line = getIn().readLine();
-            }
-
-            serverCheckSum = getIn().readLine();
-            serverResponse = getIn().readLine();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Fail! Error transferring the file!";
-        }
-
-        String checksum = calculateChecksumForString(subsetOfFile.toString());
-        if (checksum.equals(serverCheckSum)) {
-            System.out.println("Client " + getClientName() + ": Subset of the "+filename+" file successfully received by the client!");
-            System.out.println("Calculated checksum for it is: "+checksum);
-            System.out.println("The subset is:");
-            System.out.println(subsetOfFile);
-            System.out.println("Server " + serverName + ": " + serverResponse);
-        } else {
-            System.out.println("Message received but with errors!");
-            System.out.println("Subset received length = "+subsetOfFile.length()+" and is:");
-            System.out.println(subsetOfFile);
-            System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
-            System.out.println(checksum);
-            System.out.println("The checksum received has a length of "+serverCheckSum.length()+" and is:");
-            System.out.println(serverCheckSum);
-            return "Fail! Error transferring file!";
-        }
-
-
-        return serverResponse;
-    }
-
-    private String receiveFile(String messageForServer) {
-
-        String serverResponse, serverChecksum;
-        String fileName = messageForServer.split("_",3)[2];
-        fileName = fileName.substring(0,fileName.length()-1);
-        File tempFile = new File("Client Folder", fileName);
-        boolean fileExists = tempFile.exists();
-
-        if (fileExists) {
-            System.out.println("There is already a file on this client with the same name as the one you try to transfer from the server.");
-            System.out.println("Change the name of the file present on this client or choose another file to transfer from the server!");
-            return "Fail! Duplicate name on the client";
-        } else {
-
-            try (BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));) {
-                serverChecksum = getIn().readLine();
-                System.out.println("Server checksum length = "+serverChecksum.length()+" and the checksum: ");
-                System.out.println(serverChecksum);
-                String line = getIn().readLine();
-                while ((line != null) && (line.length()>0)) {
-                    line = line + "\n";
-                    writeFile.write(line);
-                    writeFile.flush();
-                    line = getIn().readLine();
-                }
-
-                serverResponse = getIn().readLine();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "Fail! Error transferring the file!";
-            }
-
-            String checksum = generateCheckSum(fileName);
-
-            if (checksum.equals(serverChecksum)) {
-                System.out.println("Client "+getClientName()+": File successfully transferred to the client!");
-                System.out.println("Client checksum length = "+checksum.length()+" and the checksum: ");
-                System.out.println(checksum);
-                System.out.println("Server "+serverName+": "+serverResponse);
-                return serverResponse;
-            } else {
-                System.out.println("Client checksum length = "+checksum.length()+" and the checksum: ");
-                System.out.println(checksum);
-                System.out.println("Fail! File transferred but with errors. Checksums don't match!");
-                return "Fail! File transferred but with errors. Checksums don't match!";
-            }
-
-        }
-
     }
 
     private void connectToServer() {
@@ -354,44 +159,14 @@ public class TCPClient {
         } while ((!inputChoice.equals("n")) && (!inputChoice.equals("N")));
 
         try{
-            int serverPort = 7896;
+            int serverPort = 12345;
             setServer(new Socket(serverName, serverPort));
             createStreamToServer();
-            //testCreateFile("test2.txt");
-/*
-            setIn(new BufferedReader(new InputStreamReader(getServer().getInputStream())));
-            setOut(new BufferedWriter(new OutputStreamWriter(getServer().getOutputStream())));
-*/
             registerToServer();
         }catch (UnknownHostException e){
             System.out.println("Sock:"+e.getMessage());
         } catch (EOFException e){System.out.println("EOF:"+e.getMessage());
         } catch (IOException e){System.out.println("IO:"+e.getMessage());}
-
-    }
-
-    private boolean createStreamToServer() {
-        try {
-            setIn(new BufferedReader(new InputStreamReader(getServer().getInputStream())));
-            setOut(new BufferedWriter(new OutputStreamWriter(getServer().getOutputStream())));
-            return true;
-        } catch (IOException e) {
-            System.out.println("Cannot create a stream to server "+getServerName()+"!");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean closeStreamToServer() {
-        try {
-            getIn().close();
-            getOut().close();
-            return true;
-        } catch (IOException e) {
-            System.out.println("Cannot close the stream to server "+getServerName()+"!");
-            e.printStackTrace();
-            return false;
-        }
 
     }
 
@@ -417,36 +192,17 @@ public class TCPClient {
 
     }
 
-    private Socket closeConnectionToServer() {
-        if (getServer() == null) {
-            System.out.println("No connection established! Please connect first to a server!");
-            return null;
-        }
-        String messageForServer = clientName + "_" + "8";
-        sendMessageToServer(messageForServer);
-        try {
-
-            closeStreamToServer();
-            getServer().close();
-            setServer(null);
-
-        } catch (IOException e) {
-            System.out.println("Connection close failed!");
-        }
-        System.out.println("Connection closed successful!");
-        return server;
-    }
-
-    private void deleteFile() {
+    private void createFile() {
         if(getServer()==null) {
             System.out.println("No connection established! Please connect first to a server!");
             return;
         }
+
         Scanner scanner = new Scanner(System.in);
         String fileName;
         String messageForServer;
 
-        System.out.println("Please input the file name to be deleted from the server: ");
+        System.out.println("Please input the file name to be created: ");
         do {
             fileName = scanner.nextLine();
             if (fileName.equals("")) {
@@ -454,51 +210,17 @@ public class TCPClient {
             }
         } while (fileName.equals(""));
 
-        messageForServer = clientName+"_"+"7"+"_"+fileName;
+        messageForServer = clientName+"_"+"2"+"_"+fileName;
         sendMessageToServer(messageForServer);
 
     }
 
-    private void requestSubSetFile() {
-        if (getServer() == null) {
-            System.out.println("No connection established! Please connect first to a server!");
-            return;
-        }
-        Scanner scanner = new Scanner(System.in);
-        String fileName;
-        String messageForServer;
-
-        System.out.println("Please input the file name for which a subset is requested: ");
-        do {
-            fileName = scanner.nextLine();
-            if (fileName.equals("")) {
-                System.out.println("Empty name not accepted! Try again!");
-            }
-        } while (fileName.equals(""));
-
-        messageForServer = clientName + "_" + "6" + "_" + fileName;
-        sendMessageToServer(messageForServer);
-
-    }
-
-    private void requestSummary() {
+    private void listFiles() {
         if(getServer()==null) {
             System.out.println("No connection established! Please connect first to a server!");
             return;
         }
-        Scanner scanner = new Scanner(System.in);
-        String fileName;
-        String messageForServer;
-
-        System.out.println("Please input the file name for which you would like a summary: ");
-        do {
-            fileName = scanner.nextLine();
-            if (fileName.equals("")) {
-                System.out.println("Empty name not accepted! Try again!");
-            }
-        } while (fileName.equals(""));
-
-        messageForServer = clientName+"_"+"5"+"_"+fileName;
+        String messageForServer = clientName+"_"+"3";
         sendMessageToServer(messageForServer);
 
     }
@@ -537,11 +259,11 @@ public class TCPClient {
                 } while ((!inputChoice.equals("n")) && (!inputChoice.equals("N")) && (!inputChoice.equals("y")) && (!inputChoice.equals("Y")));
                 switch (inputChoice) {
                     case "n": tryToTransferFile = false;
-                    break;
+                        break;
                     case "N": tryToTransferFile = false;
-                    break;
+                        break;
                     case "y": tryToTransferFile = true;
-                    break;
+                        break;
                     case "Y": tryToTransferFile = true;
                 }
             } else {
@@ -557,27 +279,16 @@ public class TCPClient {
 
     }
 
-    private void listFiles() {
+    private void requestSummary() {
         if(getServer()==null) {
             System.out.println("No connection established! Please connect first to a server!");
             return;
         }
-        String messageForServer = clientName+"_"+"3";
-        sendMessageToServer(messageForServer);
-
-    }
-
-    private void createFile() {
-        if(getServer()==null) {
-            System.out.println("No connection established! Please connect first to a server!");
-            return;
-        }
-
         Scanner scanner = new Scanner(System.in);
         String fileName;
         String messageForServer;
 
-        System.out.println("Please input the file name to be created: ");
+        System.out.println("Please input the file name for which you would like a summary: ");
         do {
             fileName = scanner.nextLine();
             if (fileName.equals("")) {
@@ -585,15 +296,264 @@ public class TCPClient {
             }
         } while (fileName.equals(""));
 
-        messageForServer = clientName+"_"+"2"+"_"+fileName;
+        messageForServer = clientName+"_"+"5"+"_"+fileName;
         sendMessageToServer(messageForServer);
+
+    }
+
+    private void requestSubSetFile() {
+        if (getServer() == null) {
+            System.out.println("No connection established! Please connect first to a server!");
+            return;
+        }
+        Scanner scanner = new Scanner(System.in);
+        String fileName;
+        String messageForServer;
+
+        System.out.println("Please input the file name for which a subset is requested: ");
+        do {
+            fileName = scanner.nextLine();
+            if (fileName.equals("")) {
+                System.out.println("Empty name not accepted! Try again!");
+            }
+        } while (fileName.equals(""));
+
+        messageForServer = clientName + "_" + "6" + "_" + fileName;
+        sendMessageToServer(messageForServer);
+
+    }
+
+    private void deleteFile() {
+        if(getServer()==null) {
+            System.out.println("No connection established! Please connect first to a server!");
+            return;
+        }
+        Scanner scanner = new Scanner(System.in);
+        String fileName;
+        String messageForServer;
+
+        System.out.println("Please input the file name to be deleted from the server: ");
+        do {
+            fileName = scanner.nextLine();
+            if (fileName.equals("")) {
+                System.out.println("Empty name not accepted! Try again!");
+            }
+        } while (fileName.equals(""));
+
+        messageForServer = clientName+"_"+"7"+"_"+fileName;
+        sendMessageToServer(messageForServer);
+
+    }
+
+    private Socket closeConnectionToServer() {
+        if (getServer() == null) {
+            System.out.println("No connection established! Please connect first to a server!");
+            return null;
+        }
+        String messageForServer = clientName + "_" + "8";
+        sendMessageToServer(messageForServer);
+        try {
+
+            closeStreamToServer();
+            getServer().close();
+            setServer(null);
+
+        } catch (IOException e) {
+            System.out.println("Connection close failed!");
+        }
+        System.out.println("Connection closed successful!");
+        return server;
+    }
+
+    private void printMenuOptions() {
+        System.out.println("\n1 - Connect to Server  ----------------+-- 6 - Request a subset of a file");
+        System.out.println("2 - Create file -----------------------+-- 7 - Delete file");
+        System.out.println("3 - List files on the Server ----------+-- 8 - Close connection to the Server");
+        System.out.println("4 - Transfer file ---------------------+-- 9 - Print Main Menu");
+        System.out.println("5 - Summary of a file -----------------+-- 0 - Exit");
+
+    }
+
+    private String sendMessageToServer(String messageForServer) {
+
+        String serverResponse;
+
+        try {
+            messageForServer = messageForServer + "\n";
+            System.out.println("Message to server = " + messageForServer);
+            String serverRequestType = messageForServer.split("_", 3)[1];
+
+            getOut().write(messageForServer);
+            getOut().flush();
+
+            serverResponse = getIn().readLine();
+            //System.out.println("Server Response = "+serverResponse);
+            String[] sb = serverResponse.split(" ", 3);
+            String foundFileOnServer = sb[0] + " " + sb[1];
+
+            if (((serverRequestType.equals("4")) || (serverRequestType.equals("6"))) && (foundFileOnServer.equals("File exists!"))) {
+                System.out.println("Server " + serverName + ": " + serverResponse);
+                if (serverRequestType.equals("4")) {
+                    serverResponse = receiveFile(messageForServer);
+                } else {
+                    serverResponse = receiveSubsetOfAFile(messageForServer);
+                }
+
+                return serverResponse;
+
+            } else {
+                System.out.println("Server " + serverName + ": " + serverResponse);
+                return serverResponse;
+            }
+        } catch (UnknownHostException e) {
+            System.out.println("Unknown Host! Sock:" + e.getMessage());
+            return ("Fail! " + "Unknown Host! Sock:" + e.getMessage());
+        } catch (EOFException e) {
+            System.out.println("EOF:" + e.getMessage());
+            return ("Fail! " + "EOF:" + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IO Error:" + e.getMessage());
+            return ("Fail! " + "IO Error:" + e.getMessage());
+        }
+
+    }
+
+    private String receiveFile(String messageForServer) {
+
+        String serverResponse, serverChecksum;
+        String fileName = messageForServer.split("_",3)[2];
+        fileName = fileName.substring(0,fileName.length()-1);
+        File tempFile = new File("Client Folder", fileName);
+        boolean fileExists = tempFile.exists();
+
+        if (fileExists) {
+            System.out.println("There is already a file on this client with the same name as the one you try to transfer from the server.");
+            System.out.println("Change the name of the file present on this client or choose another file to transfer from the server!");
+            return "Fail! Duplicate name on the Client "+getClientName()+"!";
+        } else {
+
+            try (BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));) {
+                serverChecksum = getIn().readLine();
+                String line = getIn().readLine();
+                while ((line != null) && (line.length()>0)) {
+                    line = decryptReceivedMessage(line);
+                    line = line + "\n";
+                    writeFile.write(line);
+                    writeFile.flush();
+                    line = getIn().readLine();
+                }
+
+                serverResponse = getIn().readLine();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Fail! Error transferring the file!";
+            }
+
+            String checksum = generateCheckSum(fileName);
+
+            if (checksum.equals(serverChecksum)) {
+                System.out.println("Client "+getClientName()+": File successfully transferred to the client!");
+                System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
+                System.out.println(checksum);
+                System.out.println("The checksum received has a length of "+serverChecksum.length()+" and is:");
+                System.out.println(serverChecksum);
+                System.out.println("Server "+serverName+": "+serverResponse);
+                return serverResponse;
+            } else {
+                System.out.println("File "+fileName+" transferred but with errors!");
+                System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
+                System.out.println(checksum);
+                System.out.println("The checksum received has a length of "+serverChecksum.length()+" and is:");
+                System.out.println(serverChecksum);
+                System.out.println("Fail! File "+fileName+" transferred but with errors. Checksums don't match!");
+                return "Fail! File transferred but with errors. Checksums don't match!";
+            }
+
+        }
+
+    }
+
+    private String receiveSubsetOfAFile(String messageForServer) {
+        String serverResponse;
+        StringBuilder subsetOfFile = new StringBuilder();
+        String serverCheckSum;
+        String filename = messageForServer.split("_",3)[2];
+        filename = filename.substring(0, filename.length()-1);
+
+        try {
+            String line = getIn().readLine();
+            while ((line != null) && (line.length() > 0)) {
+                line = decryptReceivedMessage(line);
+                line = line + "\n";
+                subsetOfFile.append(line);
+                line = getIn().readLine();
+            }
+
+            serverCheckSum = getIn().readLine();
+
+            serverResponse = getIn().readLine();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Fail! Error transferring the file!";
+        }
+
+        String checksum = calculateChecksumForString(subsetOfFile.toString());
+
+        if (checksum.equals(serverCheckSum)) {
+            System.out.println("Client " + getClientName() + ": Subset of the "+filename+" file successfully received by the client!\n");
+            System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
+            System.out.println(checksum);
+            System.out.println("The checksum received has a length of "+serverCheckSum.length()+" and is:");
+            System.out.println(serverCheckSum);
+            System.out.println("The subset is:");
+            System.out.println(subsetOfFile);
+            System.out.println("Server " + serverName + ": " + serverResponse);
+        } else {
+            System.out.println("Client " + getClientName() + ": Message received but with errors!\n");
+            System.out.println("Subset received length = "+subsetOfFile.length()+" and is:");
+            System.out.println(subsetOfFile);
+            System.out.println("The checksum calculated from the received answer has the length = "+checksum.length()+" and is:");
+            System.out.println(checksum);
+            System.out.println("The checksum received has a length of "+serverCheckSum.length()+" and is:");
+            System.out.println(serverCheckSum);
+            return "Fail! Error transferring file!";
+        }
+
+
+        return serverResponse;
+    }
+
+    private boolean createStreamToServer() {
+        try {
+            setIn(new BufferedReader(new InputStreamReader(getServer().getInputStream())));
+            setOut(new BufferedWriter(new OutputStreamWriter(getServer().getOutputStream())));
+            return true;
+        } catch (IOException e) {
+            System.out.println("Cannot create a stream to server "+getServerName()+"!");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean closeStreamToServer() {
+        try {
+            getIn().close();
+            getOut().close();
+            return true;
+        } catch (IOException e) {
+            System.out.println("Cannot close the stream to server "+getServerName()+"!");
+            e.printStackTrace();
+            return false;
+        }
 
     }
 
     private String generateCheckSum(String filename) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            String checksum = calculateChecksum2(filename, md);
+            String checksum = calculateChecksum(filename, md);
             return checksum;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -601,26 +561,7 @@ public class TCPClient {
         }
     }
 
-    private String calculateChecksum(String filename, MessageDigest md) {
-        File tempFile = new File("Client Folder", filename);
-
-        try (DigestInputStream dis = new DigestInputStream(new FileInputStream(tempFile), md)) {
-            while (dis.read() != -1) ; //empty loop to clear the data
-            md = dis.getMessageDigest();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-
-        // bytes to hex
-        StringBuilder result = new StringBuilder();
-        for (byte b : md.digest()) {
-            result.append(String.format("%02x", b));
-        }
-        return result.toString();
-    }
-
-    private String calculateChecksum2 (String filename, MessageDigest md) {
+    private String calculateChecksum (String filename, MessageDigest md) {
         File tempFile = new File("Server Folder", filename);
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
             byte[] buffer = new byte[1024];
@@ -652,14 +593,22 @@ public class TCPClient {
         return result;
     }
 
-    private void printMenuOptions() {
-        System.out.println();
-        System.out.println("1 - Connect to Server  ----------------+-- 6 - Request a subset of a file");
-        System.out.println("2 - Create file -----------------------+-- 7 - Delete file");
-        System.out.println("3 - List files on the Server ----------+-- 8 - Close connection to the Server");
-        System.out.println("4 - Transfer file ---------------------+-- 9 - Print Main Menu");
-        System.out.println("5 - Summary of a file -----------------+-- 0 - Exit");
+    private String decryptReceivedMessage (String message) {
+        String secret = "qwertyuiopasdfgh";
+        byte[] decodedKey = Base64.getDecoder().decode(secret);
+        SecretKey secretKey;
 
+        try {
+            Cipher myCipher = Cipher.getInstance("AES");
+            secretKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
+            myCipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte[] bytesToBeDecrypted = Base64.getDecoder().decode(message);
+            byte[] decryptedBytes = myCipher.doFinal(bytesToBeDecrypted);
+            return new String(decryptedBytes);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 
