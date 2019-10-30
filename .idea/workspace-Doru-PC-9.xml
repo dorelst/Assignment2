@@ -74,7 +74,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TPCClient">
+  <component name="RunManager" selected="Application.TCPServer">
     <configuration name="TCPServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="TCPServer" />
       <module name="Assignment2" />
@@ -120,7 +120,7 @@
       <workItem from="1572107526925" duration="2265000" />
       <workItem from="1572141563084" duration="5561000" />
       <workItem from="1572351240720" duration="18195000" />
-      <workItem from="1572428453386" duration="1750000" />
+      <workItem from="1572428782262" duration="638000" />
     </task>
     <servers />
   </component>

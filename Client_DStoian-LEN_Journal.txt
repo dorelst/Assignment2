@@ -1,0 +1,541 @@
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Connected to Doru-PC server! Please Register!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_1_o_p
+
+Server Doru-PC responded: Success! Client DStoian-LEN registered to Doru-PC server under user o!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_2_test7.txt
+
+Server Doru-PC responded: Success! File test7.txt created by DStoian-LEN client!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_3
+
+Server Doru-PC responded: List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt, test7.txt
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_3
+
+Server Doru-PC responded: List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt, test7.txt
+There is already a file on this client with the same name as the one you try to transfer from the server.
+Change the name of the file present on this client or choose another file to transfer from the server!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test3.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test3.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+fa6a02acfeaa72a1572368f32a23b882
+The checksum received has a length of 32 and is:
+883e0722cce4761927ba6c35363572ee
+Fail! File test3.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test3.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test3.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+607ada471b630bd89ae709df9b03c903
+The checksum received has a length of 32 and is:
+883e0722cce4761927ba6c35363572ee
+Fail! File test3.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test3.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test3.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+f863c66f2d3ec5f6fd9a281cc8cc10af
+The checksum received has a length of 32 and is:
+883e0722cce4761927ba6c35363572ee
+Fail! File test3.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test3.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test3.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+ac6ba4e8db675d598a142cfe553ed698
+The checksum received has a length of 32 and is:
+883e0722cce4761927ba6c35363572ee
+Fail! File test3.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test3.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+883e0722cce4761927ba6c35363572ee
+The checksum received has a length of 32 and is:
+883e0722cce4761927ba6c35363572ee
+Server Doru-PC: Success! File test3.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test4.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+5951f1d6ba56b1ad1e3bb1378c772f9d
+The checksum received has a length of 32 and is:
+5951f1d6ba56b1ad1e3bb1378c772f9d
+Server Doru-PC: Success! File test4.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test5.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test5.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+26022ff54d895616f9885e48e0ec542d
+The checksum received has a length of 32 and is:
+d244b9d69d8112fd775fe8baa364bb71
+Fail! File test5.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test5.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+d244b9d69d8112fd775fe8baa364bb71
+The checksum received has a length of 32 and is:
+d244b9d69d8112fd775fe8baa364bb71
+Server Doru-PC: Success! File test5.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_5_test6.txt
+
+Server Doru-PC responded: Success! This is the requested summary, for client DStoian-LEN: file test6.txt has 6 lines, and 30 words!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_5_test7.txt
+
+Server Doru-PC responded: Success! This is the requested summary, for client DStoian-LEN: file test7.txt has 5 lines, and 25 words!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_6_test6.txt
+
+Server Doru-PC responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test6.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+1f91a599ce64544aa3c7ef99ddb202d5
+The checksum received has a length of 32 and is:
+1f91a599ce64544aa3c7ef99ddb202d5
+The subset is:
+Xhhhhhh Xaaaaaa Xeeeeee Xdddddd Xgggggg
+Xcccccc Xiiiiii Xgggggg Xgggggg Xiiiiii
+
+Server Doru-PC: Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_6_test7.txt
+
+Server Doru-PC responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test7.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+d41d8cd98f00b204e9800998ecf8427e
+The checksum received has a length of 32 and is:
+d41d8cd98f00b204e9800998ecf8427e
+The subset is:
+
+Server Doru-PC: Success! Subset of the file test7.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_6_test6.txt
+
+Server Doru-PC responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test6.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+c814ec096d0daa98d8b8679696befe74
+The checksum received has a length of 32 and is:
+c814ec096d0daa98d8b8679696befe74
+The subset is:
+Xhhhhhh Xaaaaaa Xeeeeee Xdddddd Xgggggg
+Xdddddd Xbbbbbb Xffffff Xiiiiii Xdddddd
+
+Server Doru-PC: Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_6_test6.txt
+
+Server Doru-PC responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Fail! Message received but with errors!
+
+Subset received length = 119 and is:
+Xhhhhhh Xaaaaaa Xeeeeee Xdddddd Xgggggg
+Xdddddd Xffffff Xgggggg Xhhhhhh Xgggggg
+iiiiii Xiiiiii Xeeeeee Xaaaaaa Xeeeeee
+
+The checksum calculated from the received answer has the length = 32 and is:
+cb5f1d2da2c98edad994308e749cd8fc
+The checksum received has a length of 32 and is:
+a458b6898812321c7fff82be1023f7a2
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_6_test6.txt
+
+Server Doru-PC responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test6.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+d64b7c2ae12c576f247ef095dd5b33cd
+The checksum received has a length of 32 and is:
+d64b7c2ae12c576f247ef095dd5b33cd
+The subset is:
+Xiiiiii Xdddddd Xbbbbbb Xcccccc Xaaaaaa
+
+Server Doru-PC: Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_7_test7.txt
+
+Server Doru-PC responded: Success! File test7.txt successfully deleted from the server by DStoian-LEN client!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_8
+
+Server Doru-PC responded: Closed! Connection from DStoian-LEN successfully closed!
+Connection to Doru-PC server closed successfully!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Connected to DStoian-HP server! Please Register!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_1_t_p
+
+Server DStoian-HP responded: Success! Client DStoian-LEN registered to DStoian-HP server under user t!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_2_test1.txt
+
+Server DStoian-HP responded: Success! File test1.txt created by DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_2_test2.txt
+
+Server DStoian-HP responded: Success! File test2.txt created by DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_2_test3.txt
+
+Server DStoian-HP responded: Success! File test3.txt created by DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_3
+
+Server DStoian-HP responded: List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt
+There is already a file on this client with the same name as the one you try to transfer from the server.
+Change the name of the file present on this client or choose another file to transfer from the server!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_4_test1.txt
+
+Server DStoian-HP responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test1.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+9433b12f97a4f132b6ca27cc1ddf340e
+The checksum received has a length of 32 and is:
+ee7a000951c2015ddc0a6d8d29624064
+Fail! File test1.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_4_test1.txt
+
+Server DStoian-HP responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test1.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+9793b465f1f187d1a67026e5a9b6957c
+The checksum received has a length of 32 and is:
+ee7a000951c2015ddc0a6d8d29624064
+Fail! File test1.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_4_test1.txt
+
+Server DStoian-HP responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test1.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+9793b465f1f187d1a67026e5a9b6957c
+The checksum received has a length of 32 and is:
+ee7a000951c2015ddc0a6d8d29624064
+Fail! File test1.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_4_test1.txt
+
+Server DStoian-HP responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+ee7a000951c2015ddc0a6d8d29624064
+The checksum received has a length of 32 and is:
+ee7a000951c2015ddc0a6d8d29624064
+Server DStoian-HP: Success! File test1.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+29aa2c5f9b56651cf473e7bf960b96a3
+The checksum received has a length of 32 and is:
+29aa2c5f9b56651cf473e7bf960b96a3
+The subset is:
+Xgggggg Xbbbbbb Xcccccc Xcccccc Xiiiiii
+Xaaaaaa Xeeeeee Xaaaaaa Xaaaaaa Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+1b386b38ae824cbc3ca40cfc9ce8840c
+The checksum received has a length of 32 and is:
+1b386b38ae824cbc3ca40cfc9ce8840c
+The subset is:
+Xcccccc Xiiiiii Xeeeeee Xgggggg Xdddddd
+Xeeeeee Xcccccc Xffffff Xffffff Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+661b8e32017fdf6cc7388fb0b7f4f3d6
+The checksum received has a length of 32 and is:
+661b8e32017fdf6cc7388fb0b7f4f3d6
+The subset is:
+Xbbbbbb Xgggggg Xdddddd Xdddddd Xbbbbbb
+Xcccccc Xiiiiii Xeeeeee Xgggggg Xdddddd
+Xiiiiii Xgggggg Xeeeeee Xeeeeee Xcccccc
+Xaaaaaa Xgggggg Xbbbbbb Xdddddd Xdddddd
+Xgggggg Xbbbbbb Xcccccc Xcccccc Xiiiiii
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+38e359b162ea11b8a8a6bec56cf34541
+The checksum received has a length of 32 and is:
+38e359b162ea11b8a8a6bec56cf34541
+The subset is:
+Xeeeeee Xeeeeee Xgggggg Xffffff Xhhhhhh
+Xaaaaaa Xeeeeee Xaaaaaa Xaaaaaa Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+ea7cd5ef3b6625380d45c70fe7816c0f
+The checksum received has a length of 32 and is:
+ea7cd5ef3b6625380d45c70fe7816c0f
+The subset is:
+Xbbbbbb Xgggggg Xdddddd Xdddddd Xbbbbbb
+Xeeeeee Xeeeeee Xgggggg Xffffff Xhhhhhh
+Xaaaaaa Xgggggg Xbbbbbb Xdddddd Xdddddd
+Xaaaaaa Xeeeeee Xaaaaaa Xaaaaaa Xffffff
+Xiiiiii Xcccccc Xcccccc Xiiiiii Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+86377cb32e014962a1273f163a4ffe03
+The checksum received has a length of 32 and is:
+86377cb32e014962a1273f163a4ffe03
+The subset is:
+Xaaaaaa Xeeeeee Xaaaaaa Xaaaaaa Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+b608b7ab807da031a1bfd01b1024e0e9
+The checksum received has a length of 32 and is:
+b608b7ab807da031a1bfd01b1024e0e9
+The subset is:
+Xbbbbbb Xgggggg Xdddddd Xdddddd Xbbbbbb
+Xaaaaaa Xeeeeee Xaaaaaa Xaaaaaa Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Fail! Message received but with errors!
+
+Subset received length = 119 and is:
+Xcccccc Xiiiiii Xeeeeee Xgggggg Xdddddd
+iiiiii Xgggggg Xeeeeee Xeeeeee Xcccccc
+Xiiiiii Xcccccc Xcccccc Xiiiiii Xffffff
+
+The checksum calculated from the received answer has the length = 32 and is:
+b829936ff14a6634908e0ef477f8a1ec
+The checksum received has a length of 32 and is:
+0a5531bdca1f4dd9523a159e24a17234
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_6_test1.txt
+
+Server DStoian-HP responded: File exists! Begin sending a subset of it!
+Client DStoian-LEN: Success! Subset of the test1.txt file successfully received by the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+18535931cf574dd69df143abffc7546c
+The checksum received has a length of 32 and is:
+18535931cf574dd69df143abffc7546c
+The subset is:
+Xcccccc Xiiiiii Xeeeeee Xgggggg Xdddddd
+Xaaaaaa Xeeeeee Xaaaaaa Xaaaaaa Xffffff
+Xiiiiii Xcccccc Xcccccc Xiiiiii Xffffff
+
+Server DStoian-HP: Success! Subset of the file test1.txt transferred to DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_7_test4.txt
+
+Server DStoian-HP responded: Fail! Client DStoian-LEN tried to delete the file test4.txt, but the file doesn't exist on the server!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_7_test3.txt
+
+Server DStoian-HP responded: Success! File test3.txt successfully deleted from the server by DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_8
+
+Server DStoian-HP responded: Closed! Connection from DStoian-LEN successfully closed!
+Connection to DStoian-HP server closed successfully!
+No connection established! Please connect first to a server before creating a file!
+Connected to DStoian-HP server! Please Register!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_1_t_p
+
+Server DStoian-HP responded: Success! Client DStoian-LEN registered to DStoian-HP server under user t!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_2_test4.txt
+
+Server DStoian-HP responded: Success! File test4.txt created by DStoian-LEN client!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_4_test4.txt
+
+Server DStoian-HP responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+70fdeae0a94f94afe9509372386682e7
+The checksum received has a length of 32 and is:
+70fdeae0a94f94afe9509372386682e7
+Server DStoian-HP: Success! File test4.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to DStoian-HP server = DStoian-LEN_8
+
+Server DStoian-HP responded: Closed! Connection from DStoian-LEN successfully closed!
+Connection to DStoian-HP server closed successfully!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Connected to Doru-PC server! Please Register!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_1_t_p
+
+Server Doru-PC responded: Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_3
+
+Server Doru-PC responded: List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test7.txt
+
+Server Doru-PC responded: Fail! File not present! test7.txt requested by DStoian-LEN client doesn't exist on the server! 
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test6.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test6.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+f436d00dc9e3b29b310daaf04ce48975
+The checksum received has a length of 32 and is:
+20b1141691607df297fb8dbe3e01bb33
+Fail! Corrupted File! test6.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Connected to Doru-PC server! Please Register!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_1_t_p
+
+Server Doru-PC responded: Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test6.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+20b1141691607df297fb8dbe3e01bb33
+The checksum received has a length of 32 and is:
+20b1141691607df297fb8dbe3e01bb33
+Server Doru-PC: Success! File test6.txt requested by DStoian-LEN client transferred!
+There is already a file on this client with the same name as the one you try to transfer from the server.
+Change the name of the file present on this client or choose another file to transfer from the server!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test5.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+d244b9d69d8112fd775fe8baa364bb71
+The checksum received has a length of 32 and is:
+d244b9d69d8112fd775fe8baa364bb71
+Server Doru-PC: Success! File test5.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test1.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+0786120ce46b4f5f45ff7ba926c373f2
+The checksum received has a length of 32 and is:
+0786120ce46b4f5f45ff7ba926c373f2
+Server Doru-PC: Success! File test1.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test2.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test2.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+53c53fa23943a0661388d53ee9646162
+The checksum received has a length of 32 and is:
+a7dbb3647544ce9ed7dd402873689546
+Fail! Corrupted File! test2.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+No connection established! Please connect first to a server before transferring a file!
+Connected to Doru-PC server! Please Register!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_1_t_p
+
+Server Doru-PC responded: Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test1.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+0786120ce46b4f5f45ff7ba926c373f2
+The checksum received has a length of 32 and is:
+0786120ce46b4f5f45ff7ba926c373f2
+Server Doru-PC: Success! File test1.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test2.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test2.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+08ee9b5017af8c4a86bf23998ddc7f0a
+The checksum received has a length of 32 and is:
+a7dbb3647544ce9ed7dd402873689546
+Fail! Corrupted File! test2.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test2.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Fail! File test2.txt transferred but with errors!
+
+The checksum calculated from the received answer has the length = 32 and is:
+53c53fa23943a0661388d53ee9646162
+The checksum received has a length of 32 and is:
+a7dbb3647544ce9ed7dd402873689546
+Fail! Corrupted File! test2.txt transferred but with errors. Checksums don't match!
+Corrupted file successfully deleted from client DStoian-LEN!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_test2.txt
+
+Server Doru-PC responded: File exists! Begin transfer!
+Client DStoian-LEN: Success! File successfully transferred to the client!
+
+The checksum calculated from the received answer has the length = 32 and is:
+a7dbb3647544ce9ed7dd402873689546
+The checksum received has a length of 32 and is:
+a7dbb3647544ce9ed7dd402873689546
+Server Doru-PC: Success! File test2.txt requested by DStoian-LEN client transferred!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_truy
+
+Fail! IO Error:Connection reset
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Connected to Doru-PC server! Please Register!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_1_t_p
+
+Server Doru-PC responded: Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_safsafd
+
+Server Doru-PC responded: Fail! File not present! safsafd requested by DStoian-LEN client doesn't exist on the server! 
+Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_ewrqfsa.txt
+
+Server Doru-PC responded: Fail! File not present! ewrqfsa.txt requested by DStoian-LEN client doesn't exist on the server! 
+Folder already exists on DStoian-LEN client! No new folder necessary!

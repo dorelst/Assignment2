@@ -1,0 +1,92 @@
+Folder already exists! No new folder necessary!
+Server Doru-PC is up and running on port 12345!
+Folder already exists! No new folder necessary!
+Server Doru-PC is up and running on port 12345!
+New connection established!
+Server Doru-PC response = Success! Client LAPTOP-GDTMA4IQ registered to Doru-PC server under user y!
+Server Doru-PC response = List of files for client LAPTOP-GDTMA4IQ: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt
+Server Doru-PC response = Fail! Another file with name test5.txt already present. LAPTOP-GDTMA4IQ change the name, please!
+Server Doru-PC response = Success! File test6.txt created by LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! File test7.txt created by LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = List of files for client LAPTOP-GDTMA4IQ: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt, test7.txt
+Server Doru-PC response = Success! File test7.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File test7.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File test7.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File test7.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File test7.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File test2.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File 3 created by LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! File 3 successfully deleted from the server by LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! File test3.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! This is the requested summary, for client LAPTOP-GDTMA4IQ: file test3.txt has 6 lines, and 30 words!
+Server Doru-PC response = Success! This is the requested summary, for client LAPTOP-GDTMA4IQ: file test4.txt has 9 lines, and 45 words!
+Server Doru-PC response = Success! Subset of the file test4.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test5.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test7.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test7.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test3.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test1.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test1.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! File test7.txt successfully deleted from the server by LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Fail! Client LAPTOP-GDTMA4IQ tried to delete the file test7.txt, but the file doesn't exist on the server!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! This is the requested summary, for client LAPTOP-GDTMA4IQ: file test6.txt has 6 lines, and 30 words!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to LAPTOP-GDTMA4IQ client!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to LAPTOP-GDTMA4IQ client!
+New connection established!
+Server Doru-PC response = Success! Client DStoian-LEN registered to Doru-PC server under user o!
+Server Doru-PC response = Success! File test7.txt created by DStoian-LEN client!
+Server Doru-PC response = List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt, test7.txt
+Server Doru-PC response = List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt, test7.txt
+Server Doru-PC response = Success! File test3.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test3.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test3.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test3.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test3.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test4.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test5.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test5.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! This is the requested summary, for client DStoian-LEN: file test6.txt has 6 lines, and 30 words!
+Server Doru-PC response = Success! This is the requested summary, for client DStoian-LEN: file test7.txt has 5 lines, and 25 words!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Server Doru-PC response = Success! Subset of the file test7.txt transferred to DStoian-LEN client!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Server Doru-PC response = Success! Subset of the file test6.txt transferred to DStoian-LEN client!
+Server Doru-PC response = Success! File test7.txt successfully deleted from the server by DStoian-LEN client!
+Server Doru-PC response = Closed! Connection from DStoian-LEN successfully closed!
+Success! Connection closed!
+Server Doru-PC response = List of files for client LAPTOP-GDTMA4IQ: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt
+Server Doru-PC response = Success! File test5.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Success! File test5.txt requested by LAPTOP-GDTMA4IQ client transferred!
+Server Doru-PC response = Closed! Connection from LAPTOP-GDTMA4IQ successfully closed!
+Success! Connection closed!
+Folder already exists! No new folder necessary!
+Server Doru-PC is up and running on port 12345!
+Folder already exists! No new folder necessary!
+Server Doru-PC is up and running on port 12345!
+New connection established!
+Server Doru-PC response = Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Server Doru-PC response = List of files for client DStoian-LEN: test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt
+Server Doru-PC response = Fail! File not present! test7.txt requested by DStoian-LEN client doesn't exist on the server! 
+Server Doru-PC response = Success! File test6.txt requested by DStoian-LEN client transferred!
+Fail! IO: Connection reset
+Success! Connection closed!
+New connection established!
+Server Doru-PC response = Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Server Doru-PC response = Success! File test6.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test5.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test1.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test2.txt requested by DStoian-LEN client transferred!
+New connection established!
+Server Doru-PC response = Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Server Doru-PC response = Success! File test1.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test2.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test2.txt requested by DStoian-LEN client transferred!
+Server Doru-PC response = Success! File test2.txt requested by DStoian-LEN client transferred!
+Folder already exists! No new folder necessary!
+Server Doru-PC is up and running on port 12345!
+New connection established!
+Server Doru-PC response = Success! Client DStoian-LEN registered to Doru-PC server under user t!
+Server Doru-PC response = Fail! File not present! safsafd requested by DStoian-LEN client doesn't exist on the server! 
+Server Doru-PC response = Fail! File not present! ewrqfsa.txt requested by DStoian-LEN client doesn't exist on the server! 

@@ -19,6 +19,8 @@ class Connection extends Thread {
     private BufferedReader in;
     private BufferedWriter out;
     private Socket clientSocket;
+    private String serverName;
+
     public Connection (Socket aClientSocket) {
         try {
             clientSocket = aClientSocket;
@@ -28,14 +30,32 @@ class Connection extends Thread {
         } catch(IOException e) {System.out.println("Connection:"+e.getMessage());}
     }
 
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    //The method that controls workflow for the server and it's used to run multiple threads
     public void run() {
         String serverResponse, clientRequest = "";
+        try {
+            setServerName(InetAddress.getLocalHost().getHostName());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        //The do-while loops until a close connection is received from the client
         do {
             try {
                 String messageFromClient = in.readLine();
                 if (messageFromClient != null) {
+                    //The message from the client is processed here and a response is sent back to the client
                     serverResponse = respondToClient(messageFromClient);
-                    System.out.println("Server response = " + serverResponse);
+                    printMessageToScreenAndFile("Server "+getServerName()+" response = " + serverResponse);
+                    //System.out.println("Server "+getServerName()+" response = " + serverResponse);
                     clientRequest = serverResponse.split(" ", 2)[0];
                     serverResponse = serverResponse+"\n";
                     out.write(serverResponse);
@@ -43,10 +63,11 @@ class Connection extends Thread {
                 }
 
             } catch (EOFException e) {
-                System.out.println("EOF: " + e.getMessage());
+                printMessageToScreenAndFile("Fail! EOF: " + e.getMessage());
+                //System.out.println("Fail! EOF: " + e.getMessage());
             } catch (IOException e) {
-                System.out.println("IO: " + e.getMessage());
-                System.out.println("Closing connection!");
+                printMessageToScreenAndFile("Fail! IO: " + e.getMessage());
+                //System.out.println("Fail! IO: " + e.getMessage());
                 break;
             }
         } while (!clientRequest.equals("Closed!"));
@@ -55,13 +76,14 @@ class Connection extends Thread {
             clientSocket.close();
         } catch (IOException e) {
             /*close failed*/
-            System.out.println("IO: " + e.getMessage());
-            System.out.println("Could not close connection!");
+            printMessageToScreenAndFile("Fail! Could not close the connection! IO: " + e.getMessage());
+            //System.out.println("Fail! Could not close the connection! IO: " + e.getMessage());
         }
-        System.out.println("Connection closed!");
+        printMessageToScreenAndFile("Success! Connection closed!");
+        //System.out.println("Success! Connection closed!");
     }
 
-
+    //This method sorts client requests and send them to the proper method to be processed
     private String respondToClient(String data) {
         String[] incomingData = data.split("_");
         int clientChoice = Integer.parseInt(incomingData[1]);
@@ -82,6 +104,7 @@ class Connection extends Thread {
         return "Fail! Unknown Error!";
     }
 
+    //This method register the Client to the server by saving the user name and password provided
     private String registerClient(String[] incomingData) {
         usersList.put(incomingData[2], incomingData[3]);
         String message="";
@@ -94,6 +117,7 @@ class Connection extends Thread {
         return message;
     }
 
+    //This method creates a file with the name provided by the clients and it populates it with random text
     private String createFile(String[] incomingData) {
         String message;
         boolean fileExists;
@@ -103,6 +127,7 @@ class Connection extends Thread {
             tempFile = new File("Server Folder",incomingData[2]);
             fileExists = tempFile.exists();
 
+            //If there is no file present on the server with the same name as the one provided by the client, a new file is created
             if (!fileExists) {
                 //BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Server Folder"+File.separator+incomingData[2]), "UTF-8"));
                 BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
@@ -132,6 +157,7 @@ class Connection extends Thread {
         return message;
     }
 
+    //This method list the files present on teh server (in Server Folder)
     private String listFilesOnServer(String[] incomingData) {
         File folder = new File("Server Folder");
         String[] files = folder.list();
@@ -147,15 +173,18 @@ class Connection extends Thread {
         return message;
     }
 
+    //This method transfer the file requested by the client to the client
     private String transferFile(String[] incomingData) {
         File fileToBeTransferred = new File("Server Folder",incomingData[2]);
-        boolean fileExists = fileToBeTransferred.exists();
 
+        //It checks if the file exists on the server and if it does it's sent to the client
+        boolean fileExists = fileToBeTransferred.exists();
         if (fileExists) {
 
             try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToBeTransferred), "UTF-8"))) {
                 out.write("File exists! Begin transfer!\n");
                 out.flush();
+                //The checksum for the requested file is calculated and sent to the client
                 String checksum = generateCheckSum(incomingData[2]);
                 checksum = checksum+"\n";
                 out.write(checksum);
@@ -163,7 +192,9 @@ class Connection extends Thread {
                 String line;
                 line = readFile.readLine();
                 while ((line != null) && (line.length()>0)) {
+                    //The arbitraryFailure can randomly change or leave it unchanged the string read from the file.
                     line = arbitraryFailure(line);
+                    //The string ready to be sent to the client is encrypted
                     line = encryptOutGoingMessage(line);
                     line = line + "\n";
                     out.write(line);
@@ -181,16 +212,18 @@ class Connection extends Thread {
             }
 
         } else {
-            return "Fail! File "+incomingData[2]+" requested by "+incomingData[0]+" client doesn't exist on the server! ";
+            return "Fail! File not present! "+incomingData[2]+" requested by "+incomingData[0]+" client doesn't exist on the server! ";
         }
 
         return "Success! File "+incomingData[2]+" requested by "+incomingData[0]+" client transferred!";
     }
 
+    //This method sends a summary for the file requested by the client
     private String summaryOfAFile(String[] incomingData) {
         File fileForSummary = new File("Server Folder",incomingData[2]);
-        boolean fileExists = fileForSummary.exists();
 
+        //It checks if the file requested by the client is present on the server and if found a summary of it it's sent to the client
+        boolean fileExists = fileForSummary.exists();
         if (fileExists) {
             int numberOfLines=0;
             int numberOfWords=0;
@@ -216,10 +249,12 @@ class Connection extends Thread {
 
     }
 
+    //This method sends a subset of the file requested by the client
     private String requestSubsetOfAFile(String[] incomingData) {
         File fileToSendSubset = new File("Server Folder",incomingData[2]);
-        boolean fileExists = fileToSendSubset.exists();
 
+        //It checks if the file requested by the client is present on the server and if found a subset of it it's sent to the client
+        boolean fileExists = fileToSendSubset.exists();
         if (fileExists) {
 
             try (BufferedReader readFile = new BufferedReader(new InputStreamReader(new FileInputStream(fileToSendSubset), "UTF-8"))) {
@@ -229,11 +264,15 @@ class Connection extends Thread {
                 String line;
                 line = readFile.readLine();
                 while ((line != null) && (line.length()>0)) {
+                    //It randomly decides if a line will be sent or not
                     int sendTheLine = (int)(Math.random()*4);
                     if (sendTheLine == 2) {
+                        //Builds the strings that is sent to the client, before any changes done by arbitraryFailure
                         subsetOfFile.append(line);
                         subsetOfFile.append("\n");
+                        //The arbitraryFailure can randomly change or leave it unchanged the string read from the file.
                         line = arbitraryFailure(line);
+                        //The string ready to be sent to the client is encrypted
                         line = encryptOutGoingMessage(line);
                         line = line + "\n";
                         out.write(line);
@@ -243,16 +282,20 @@ class Connection extends Thread {
                     }
                     line = readFile.readLine();
                 }
+                //This signals the client the sending of the subset is done
                 line="\n";
                 out.write(line);
                 out.flush();
 
                 System.out.println("Subset sent: ");
                 System.out.println(subsetOfFile.toString());
+
+                //The checksum for the string is calculated and sent to the client
                 String checksum = calculateChecksumForString(subsetOfFile.toString());
                 out.write(checksum);
                 out.flush();
 
+                //This signals the client the end of answer to the client for the subset request
                 line="\n";
                 out.write(line);
                 out.flush();
@@ -268,10 +311,12 @@ class Connection extends Thread {
         return "Success! Subset of the file "+incomingData[2]+" transferred to "+incomingData[0]+" client!";
     }
 
+    //This methods deletes a file from the server
     private String deleteFile(String[] incomingData) {
         File fileToBeDeleted = new File("Server Folder",incomingData[2]);
-        boolean fileExists = fileToBeDeleted.exists();
 
+        //It checks if the file specified by the client is present on the server and if found it is deleted
+        boolean fileExists = fileToBeDeleted.exists();
         if (fileExists) {
             boolean isFileDeleted = fileToBeDeleted.delete();
             if (isFileDeleted) {
@@ -286,10 +331,12 @@ class Connection extends Thread {
 
     }
 
+    //This method just signals run method the client requested to close the connection and run method will close it
     private String closeConnection(String[] incomingData) {
         return "Closed! Connection from "+incomingData[0]+" successfully closed!";
     }
 
+    //This method randomly generates an arbitrary failure that alters the string sent to the client
     private String arbitraryFailure(String messageToBeSent) {
         int sendCorruptedMessage = (int)(Math.random()*10);
         if (sendCorruptedMessage == 6) {
@@ -300,74 +347,39 @@ class Connection extends Thread {
         }
     }
 
+    //This method calculates the checksum for the file sent
     private String generateCheckSum(String filename) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            String checksum = calculateChecksum(filename, md);
-            System.out.println("Checksum length = "+checksum.length()+" and the checksum1 is: ");
-            System.out.println(checksum);
 
-            return checksum;
+            System.out.println("Calculate checksum for file : "+filename);
+            File tempFile = new File("Server Folder", filename);
+            try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
+                byte[] buffer = new byte[1024];
+                int nread;
+                while ((nread = bis.read(buffer)) != -1) {
+                    md.update(buffer, 0, nread);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // bytes to hex
+            StringBuilder result = new StringBuilder();
+            for (byte b : md.digest()) {
+                result.append(String.format("%02x", b));
+            }
+
+            System.out.println("Checksum length = "+result.length()+" and the checksum1 is: ");
+            System.out.println(result);
+
+            return result.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return "";
         }
     }
 
-/*
-    private String calculateChecksum (String filename, MessageDigest md) {
-        System.out.println("Calculate checksum for file : "+filename);
-        File tempFile = new File("Server Folder", filename);
-        InputStream is = null;
-        try {
-            is = new FileInputStream(tempFile);
-            is = new DigestInputStream(is, md);
-            byte[] buffer = new byte[1024];
-            int nread;
-            while ((nread = is.read(buffer)) != -1) {
-                md.update(buffer, 0, nread);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // bytes to hex
-        StringBuilder result = new StringBuilder();
-        for (byte b : md.digest()) {
-            result.append(String.format("%02x", b));
-        }
-        return result.toString();
-    }
-*/
-
-
-    private String calculateChecksum (String filename, MessageDigest md) {
-        System.out.println("Calculate checksum for file : "+filename);
-        File tempFile = new File("Server Folder", filename);
-        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(tempFile))) {
-            byte[] buffer = new byte[1024];
-            int nread;
-            while ((nread = bis.read(buffer)) != -1) {
-                md.update(buffer, 0, nread);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // bytes to hex
-        StringBuilder result = new StringBuilder();
-        for (byte b : md.digest()) {
-            result.append(String.format("%02x", b));
-        }
-        return result.toString();
-    }
-
-
+    //This method calculates the checksum for the subset sent
     private String calculateChecksumForString (String messageForClient) {
         String result = "";
         try {
@@ -383,6 +395,7 @@ class Connection extends Thread {
         return result;
     }
 
+    //This method encrypt the message sent to the client for transfer a file or a subset
     private String encryptOutGoingMessage(String message) {
         String secret = "qwertyuiopasdfgh";
         byte[] decodedKey = Base64.getDecoder().decode(secret);
@@ -400,5 +413,26 @@ class Connection extends Thread {
         }
         return "";
     }
+
+    //This method print to the screen a message and save it to server journal, too
+    private void printMessageToScreenAndFile(String message) {
+        System.out.println(message);
+
+        String filename = "Server_"+getServerName()+"_Journal.txt";
+        File tempFile = new File(filename);
+
+        try (BufferedWriter writeFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile, true), "UTF-8"));) {
+
+            message = message+"\n";
+            writeFile.write(message);
+            writeFile.flush();
+
+        } catch (IOException e) {
+            System.out.println("Couldn't save the message into "+getServerName()+" client journal");
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

@@ -1,8 +1,0 @@
-Xiiiiii Xdddddd Xiiiiii Xdddddd Xffffff
-Xcccccc Xhhhhhh Xiiiiii Xhhhhhh Xaaaaaa
-Xgggggg Xcccccc Xgggggg Xiiiiii Xeeeeee
-Xgggggg Xhhhhhh Xaaaaaa Xbbbbbb Xiiiiii
-Xffffff Xbbbbbb Xbbbbbb Xaaaaaa Xgggggg
-Xbbbbbb Xaaaaaa Xcccccc Xbbbbbb Xaaaaaa
-Xffffff Xdddddd Xcccccc Xdddddd Xgggggg
-Xdddddd Xdddddd Xdddddd Xgggggg Xiiiiii
