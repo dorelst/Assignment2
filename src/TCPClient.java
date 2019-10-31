@@ -462,7 +462,7 @@ public class TCPClient {
 
         try {
             messageForServer = messageForServer + "\n";
-            printMessageToScreenAndFile("Client "+getClientName()+" message to "+getServerName()+" server = " + messageForServer);
+            printMessageToScreenAndFile("Client "+getClientName()+" message to "+getServerName()+" server = " + messageForServer+"\n");
 
             //It sends and wait for the Server to respond
             getOut().write(messageForServer);

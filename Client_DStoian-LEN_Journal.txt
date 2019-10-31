@@ -539,3 +539,6 @@ Client DStoian-LEN message to Doru-PC server = DStoian-LEN_4_ewrqfsa.txt
 
 Server Doru-PC responded: Fail! File not present! ewrqfsa.txt requested by DStoian-LEN client doesn't exist on the server! 
 Folder already exists on DStoian-LEN client! No new folder necessary!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Folder already exists on DStoian-LEN client! No new folder necessary!
+Folder already exists on DStoian-LEN client! No new folder necessary!

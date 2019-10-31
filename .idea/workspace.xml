@@ -3,19 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8edaa7c3-872a-4d66-a707-427f1ce3cd53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client Folder/test1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client Folder/test1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server Folder/test.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server Folder/test1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server Folder/test2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server Folder/test3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server Folder/test4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server Folder/test4.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/Connection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Assignment2/TCPServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Connection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment 2 Report.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment 2 Report.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client_DStoian-LEN_Journal.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client_DStoian-LEN_Journal.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server_DStoian-LEN_Journal.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server_DStoian-LEN_Journal.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Assignment2/TCPClient.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -120,7 +112,8 @@
       <workItem from="1572107526925" duration="2265000" />
       <workItem from="1572141563084" duration="5561000" />
       <workItem from="1572351240720" duration="18195000" />
-      <workItem from="1572428453386" duration="1750000" />
+      <workItem from="1572428453386" duration="2829000" />
+      <workItem from="1572468406754" duration="2980000" />
     </task>
     <servers />
   </component>
